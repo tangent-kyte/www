@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stackforge Software Studio</title>
+<meta name="description" content="Stackforge is one studio for all 28 kinds of software you need: web, mobile, AI, cloud, security, bots, games, Web3 and IoT.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Direction: The well-kept board (seed 615834585). Palette: Forest and lime. Type: Hanken Grotesk.
+   The page is dark by design, so both colour schemes use the same tokens. */
+:root{
+  --bg:#0f1f10; --surface:#162a17; --surface-2:#1e3620;
+  --ink:#ffffff; --muted:#9aa39a;
+  --accent:#c6f19d; --accent-ink:#0f1f10;
+  --field-1:#000000; --field-1-ink:#ffffff;
+  --field-2:#ffffff; --field-2-ink:#0f1f10;
+  --pale:#dfe7d6; --pale-ink:#0f1f10;
+  --danger:#ffb4a8;
+
+  --step-small:clamp(0.8125rem,0.79rem + 0.1vw,0.875rem);
+  --step-body:clamp(1.0625rem,1rem + 0.25vw,1.1875rem);
+  --step-lead:clamp(1.25rem,1.05rem + 0.6vw,1.625rem);
+  --step-head:clamp(2.5rem,1rem + 5.4vw,6rem);
+  --step-display:clamp(6.25rem,19.5vw,21rem);
+
+  --gap:8px; --edge:8px; --pad:24px;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0f1f10;--surface:#162a17;--ink:#ffffff;--muted:#9aa39a;--accent:#c6f19d}
+}
+:root[data-theme="dark"]{--bg:#0f1f10;--surface:#162a17;--ink:#ffffff;--muted:#9aa39a;--accent:#c6f19d}
+@media (max-width:767px){:root{--gap:6px;--pad:20px}}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:var(--step-body);line-height:1.45;letter-spacing:-0.005em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,p,ul,ol,figure,blockquote{margin:0;padding:0}
+ul,ol{list-style:none}
+h1,h2,h3{font-weight:500}
+a{color:inherit}
+img,video{display:block;max-width:100%}
+button,input{font:inherit;color:inherit}
+::selection{background:var(--accent);color:var(--accent-ink)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:var(--edge);top:var(--edge);z-index:10;clip-path:inset(50%);background:var(--accent);color:var(--accent-ink);padding:14px 20px;text-decoration:none;font-weight:500}
+.skip:focus{clip-path:none}
+
+.head{font-size:var(--step-head);line-height:.9;letter-spacing:-0.05em;font-weight:500;text-wrap:balance}
+.lead{font-size:var(--step-lead);line-height:1.3;letter-spacing:-0.015em}
+.small{font-size:var(--step-small);line-height:1.45}
+.soft{color:var(--muted)}
+
+/* One picture treatment for every found picture: warm stone monochrome. */
+.pic{width:100%;height:100%;object-fit:cover;filter:grayscale(1) sepia(.22) contrast(1.06) brightness(.92)}
+
+.tile{background:var(--surface);padding:var(--pad);position:relative;overflow:hidden;min-width:0}
+.board{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap);padding:0 var(--edge)}
+
+/* Buttons: square, flat, one fill. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:56px;padding:0 28px;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:500;font-size:var(--step-body);border:0;cursor:pointer;transition:transform .2s var(--ease-out),background-color .25s ease}
+.btn:hover{background:#d6f7b6}
+.btn:active{transform:scale(.97)}
+.arrow{width:22px;height:22px;flex-shrink:0;transition:transform .3s var(--ease-out)}
+.btn:hover .arrow,a:hover>.arrow{transform:translateX(4px)}
+
+/* ================= HERO: name band and rails ================= */
+.hero{height:100svh;min-height:760px;max-height:1100px;grid-template-rows:auto 64px minmax(0,1fr);padding-top:var(--edge);padding-bottom:var(--edge)}
+.name-band{grid-column:1/-1;height:19.5vw;max-height:360px;padding:0;display:flex;align-items:center;justify-content:center;background:var(--field-1)}
+.name-band h1{font-size:var(--step-display);line-height:.8;letter-spacing:-0.05em;white-space:nowrap;font-weight:500;transform:translateY(-.075em)}
+.links{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap)}
+.links a{display:flex;align-items:flex-start;padding:18px var(--pad);background:var(--surface);text-decoration:none;font-size:var(--step-body);transition:background-color .25s ease}
+.links a:hover{background:var(--surface-2)}
+.rail-l{grid-column:1/3;grid-row:3;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:var(--gap);min-height:0}
+.rail-l .film{padding:0;background:var(--field-1)}
+.facts{display:grid;gap:8px}
+.facts li{font-size:var(--step-small)}
+.facts li::before{content:"";display:inline-block;width:6px;height:6px;background:var(--accent);margin-right:10px;vertical-align:middle}
+.hero-photo{grid-column:3/11;grid-row:3;position:relative;overflow:hidden;min-height:0;background:var(--field-1)}
+.hero-photo .pic{position:absolute;inset:0}
+.statement{position:absolute;left:0;bottom:0;width:min(62%,640px);background:var(--bg);padding:var(--pad) var(--pad) calc(var(--pad) + 4px)}
+.statement p:first-child{font-size:var(--step-lead);line-height:1.25;letter-spacing:-0.015em}
+.statement p+p{margin-top:12px;color:var(--muted);font-size:var(--step-small)}
+.rail-r{grid-column:11/13;grid-row:3;display:grid;grid-template-rows:repeat(5,minmax(0,1fr));gap:var(--gap);min-height:0}
+.rail-r .tile{font-size:var(--step-small);padding:18px 20px}
+.r1{background:var(--field-2);color:var(--field-2-ink)}
+.r2{background:var(--pale);color:var(--pale-ink)}
+.r3{background:var(--muted);color:var(--bg)}
+.r4{background:var(--surface-2)}
+.r5{background:var(--accent);color:var(--accent-ink);display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;font-size:var(--step-body)!important;font-weight:500;transition:background-color .25s ease}
+.r5:hover{background:#d6f7b6}
+.r5 .arrow{align-self:flex-end;width:30px;height:30px}
+
+/* ================= INTRO: statement tiles ================= */
+.intro{margin-top:var(--gap);grid-template-rows:38svh 38svh auto}
+.t-slogan{grid-column:1/9;grid-row:1/3;background:var(--field-1);display:flex;align-items:flex-end;padding:20px}
+.t-figure{grid-column:9/13;grid-row:1;background:var(--field-2);color:var(--field-2-ink);display:flex;flex-direction:column;justify-content:flex-end}
+.t-photo{grid-column:9/13;grid-row:2;padding:0}
+.t-text{grid-column:1/-1;grid-row:3;background:var(--bg);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap);padding:96px 0 0}
+.t-text .note{grid-column:1/6;align-self:end;padding-left:var(--pad)}
+.t-text .lead{grid-column:7/13;padding-right:var(--pad);line-height:1.38}
+
+/* ================= THE WALL: day tabs, banded agenda ================= */
+section{scroll-margin-top:16px}
+.wall{padding:180px calc(var(--edge) + var(--pad)) 0}
+.wall-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px}
+.wall-head .btn{flex-shrink:0}
+.count-pill{display:inline-grid;place-items:center;min-width:28px;height:28px;padding:0 8px;background:var(--accent-ink);color:var(--accent);font-size:var(--step-small);font-variant-numeric:tabular-nums}
+.wall-sub{margin-top:28px;max-width:56ch}
+.agenda{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;margin-top:56px}
+.tabs{display:flex;flex-direction:column;gap:6px}
+.tab{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;min-height:72px;padding:10px 18px;background:var(--surface);border:0;text-align:left;cursor:pointer;transition:background-color .25s ease}
+.tab:hover{background:var(--surface-2)}
+.tab[aria-selected="true"]{background:var(--field-2);color:var(--field-2-ink)}
+.tab .small{color:var(--muted)}
+.tab[aria-selected="true"] .small{color:#3d4a3d}
+.no-js .tabs{display:none}
+.panel h3{font-size:var(--step-lead);margin:0 0 16px}
+.js .panel h3{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.no-js .panel+.panel{margin-top:40px}
+.bands{display:grid;gap:4px}
+.band{width:100%;display:grid;grid-template-columns:96px minmax(0,1fr) minmax(0,auto);align-items:center;gap:24px;min-height:76px;padding:12px 24px 12px 20px;border:0;text-align:left;cursor:pointer;background:var(--surface);transition:background-color .25s ease,color .25s ease}
+.bands li:nth-child(even) .band{background:var(--surface-2)}
+.band:hover{background:#264228!important}
+.band .state{display:inline-flex;align-items:center;gap:8px;font-size:var(--step-small);color:var(--muted)}
+.band .state i{width:14px;height:14px;background:#3a523b;transition:background-color .2s ease}
+.band .title{display:block;font-size:var(--step-body);font-weight:500}
+.band .note{display:block;font-size:var(--step-small);color:var(--muted)}
+.band .stack{font-size:var(--step-small);color:var(--muted);text-align:right}
+.band[aria-pressed="true"]{background:var(--field-2)!important;color:var(--field-2-ink)}
+.band[aria-pressed="true"] .note,.band[aria-pressed="true"] .stack,.band[aria-pressed="true"] .state{color:#3d4a3d}
+.band[aria-pressed="true"] .state i{background:var(--accent-ink)}
+.band:active{transform:scale(.995)}
+
+/* ================= PROCESS: tiles that grow ================= */
+.process{padding:180px calc(var(--edge) + var(--pad)) 0}
+.stages{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:10px;row-gap:0;align-items:end}
+.process h2{grid-column:1/6;grid-row:1;align-self:start}
+.process .sub{grid-column:1/6;grid-row:1;align-self:start;margin-top:calc(var(--step-head) * 2.1);max-width:40ch}
+.stage-list{display:contents}
+.stage{display:flex;flex-direction:column}
+.stage .frame{overflow:hidden;background:var(--field-1)}
+.frame.plate{background:var(--pale)}
+.plate .pic,.strip .plate .pic{mix-blend-mode:multiply;filter:grayscale(1) contrast(1.15)}
+.stage h3{font-size:var(--step-lead);margin-top:16px}
+.stage p{margin-top:8px;font-size:var(--step-body);max-width:34ch}
+.st1{grid-column:1/3;grid-row:2}.st1 .frame{height:28vh}
+.st2{grid-column:3/6;grid-row:2}.st2 .frame{height:38vh}
+.st3{grid-column:6/9;grid-row:1/3}.st3 .frame{height:50vh}
+.st4{grid-column:9/13;grid-row:1/3}.st4 .frame{height:64vh}
+.stage h3,.stage p{padding-right:8px}
+
+/* Signature move: edge-to-edge marquee */
+.marquee{margin-top:140px;overflow:hidden;background:var(--field-2);color:var(--field-2-ink);padding:28px 0 34px}
+.marquee-track{display:flex;width:max-content;animation:run 46s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee span{font-size:var(--step-head);line-height:1;letter-spacing:-0.05em;white-space:nowrap;padding-right:.4em}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* ================= HIRE: plans as a large table ================= */
+.hire{padding:160px var(--edge) 0}
+.plans{width:100%;border-collapse:collapse;table-layout:fixed}
+.plans th,.plans td{text-align:left;vertical-align:top;padding:20px var(--pad);font-weight:400}
+.plans col.c-what{width:33.33%}
+.plans thead th{padding-top:0;padding-bottom:28px;vertical-align:bottom}
+.plans thead th.corner h2{padding-top:8px}
+.plans .pname{font-size:var(--step-lead);font-weight:500;display:block}
+.plans .pprice{font-size:var(--step-lead);display:block}
+.plans .pper{font-size:var(--step-body);color:var(--muted);display:block;margin-top:4px}
+.plans tbody th{font-size:var(--step-lead);color:var(--muted)}
+.plans tbody td{font-size:var(--step-body)}
+.plans tbody tr:nth-child(odd){background:var(--surface)}
+.plans .rec{background:var(--field-2)!important;color:var(--field-2-ink)}
+.plans .rec .pper{color:#3d4a3d}
+.plans tfoot td{padding-top:24px;padding-bottom:24px}
+.plans tfoot .btn{width:100%}
+.btn-quiet{background:var(--surface-2);color:var(--ink)}
+.btn-quiet:hover{background:#264228}
+.plans-m{display:none}
+
+/* ================= QUESTIONS: a band per question ================= */
+.faq{margin-top:140px}
+.q-head{min-height:32svh;background:var(--field-1);display:flex;align-items:flex-end;padding:56px calc(var(--edge) + var(--pad)) 40px}
+.q{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap);padding:56px calc(var(--edge) + var(--pad));background:var(--bg)}
+.q:nth-of-type(even){background:var(--surface)}
+.q h3{grid-column:1/6;font-size:var(--step-lead);line-height:1.2}
+.q p{grid-column:7/13;max-width:60ch}
+
+/* ================= ORDER: photo strip, three-cell bar ================= */
+.order{background:var(--field-2);color:var(--field-2-ink);min-height:80svh;padding:48px 0 96px}
+.strip{display:flex;gap:8px;height:150px;padding:0 var(--edge);overflow:hidden}
+.strip figure{flex:var(--w) 1 0;min-width:0;overflow:hidden;background:#ccc}
+.strip .pic{transition:transform .8s var(--ease-out)}
+.strip figure:hover .pic{transform:scale(1.05)}
+.order-body{padding:72px calc(var(--edge) + var(--pad)) 0}
+.ticket{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap);margin-top:40px}
+.ticket .t-label{grid-column:1/4;color:#3d4a3d}
+.ticket .t-list{grid-column:4/13;font-size:var(--step-lead);line-height:1.3}
+.ticket .t-plan{grid-column:4/13;margin-top:8px;color:#3d4a3d}
+.ticket button.clear{background:none;border:0;padding:0 0 0 12px;color:#3d4a3d;text-decoration:underline;cursor:pointer;font-size:var(--step-small)}
+.bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:40px}
+.cell{display:flex;flex-direction:column;gap:8px}
+.bar input{width:100%;height:96px;border:0;background:var(--pale);color:var(--field-2-ink);font-size:var(--step-lead);text-align:center;padding:0 16px;transition:background-color .2s ease}
+.bar input::placeholder{color:#4b584b}
+.bar input:focus{outline:3px solid var(--field-2-ink);outline-offset:-3px;background:#f4f8ef}
+.bar input[aria-invalid="true"]{outline:3px solid #8a1c0e;outline-offset:-3px}
+.bar .send{height:96px;width:100%;border:0;background:var(--bg);color:var(--ink);font-size:var(--step-lead);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:14px;transition:background-color .25s ease,transform .2s var(--ease-out)}
+.bar .send:hover{background:#000}
+.bar .send:active{transform:scale(.98)}
+.bar .small{color:#3d4a3d}
+.bar .err{color:#8a1c0e;font-weight:500}
+.bar .err:empty{display:none}
+
+/* ================= FOOTER: a footer of tiles ================= */
+.foot{margin-top:var(--gap);padding-bottom:var(--edge);grid-template-rows:240px auto auto}
+.f-state{grid-column:1/5;display:flex;flex-direction:column;justify-content:space-between}
+.f-state p:first-child{font-size:var(--step-lead);line-height:1.25}
+.f-nav{grid-column:5/7}
+.f-nav ul{display:grid;gap:6px}
+.f-nav a{text-decoration:none;font-size:var(--step-body)}
+.f-nav a:hover{color:var(--accent)}
+.f-mail{grid-column:7/10;display:flex;flex-direction:column;justify-content:space-between}
+.f-mail a{font-size:var(--step-lead);text-decoration:none;overflow-wrap:anywhere}
+.f-mail a:hover{text-decoration:underline}
+.f-word{grid-column:1/-1;height:21.5vw;max-height:390px;background:var(--field-2);color:var(--field-2-ink);display:flex;align-items:center;justify-content:center;padding:0;overflow:hidden}
+.f-word p{font-size:var(--step-display);transform:translateY(-.06em);letter-spacing:-0.05em;line-height:.8;font-weight:500;white-space:nowrap}
+.f-cta{grid-column:10/13;background:var(--accent);color:var(--accent-ink);display:flex;flex-direction:column;justify-content:space-between;text-decoration:none;transition:background-color .25s ease}
+.f-cta:hover{background:#d6f7b6}
+.f-cta .arrow{align-self:flex-end;width:56px;height:56px}
+.f-credits{grid-column:1/-1;background:var(--bg);padding:24px var(--pad) 16px}
+.f-credits p{max-width:75ch}
+.f-credits a{color:var(--ink)}
+
+/* ================= Motion layer ================= */
+.js [data-r]{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease-out),transform .9s var(--ease-out);transition-delay:var(--d,0ms)}
+.js [data-r].in{opacity:1;transform:none}
+.js .hero [data-r]{transform:translateY(16px)}
+.hero-photo .pic{animation:drift 26s ease-in-out infinite alternate;transform-origin:60% 40%}
+@keyframes drift{from{transform:scale(1.02)}to{transform:scale(1.1) translate(-1.5%,-1%)}}
+.stage .frame .pic{transition:transform 1.2s var(--ease-out)}
+.stage:hover .frame .pic{transform:scale(1.04)}
+.t-photo .pic{transition:transform 1.2s var(--ease-out)}
+.t-photo:hover .pic{transform:scale(1.04)}
+
+@media (prefers-reduced-motion:reduce){
+  .js [data-r]{opacity:1;transform:none;transition:none}
+  .hero-photo .pic,.marquee-track{animation:none}
+  .marquee-track span[aria-hidden]{display:none}
+  *{transition-duration:.01ms!important}
+}
+
+/* ================= Tablet ================= */
+@media (max-width:1099px) and (min-width:768px){
+  .hero{height:auto;min-height:0;max-height:none;grid-template-rows:auto 64px 560px}
+  .rail-l{grid-column:1/4}.hero-photo{grid-column:4/10}.rail-r{grid-column:10/13}
+  .agenda{grid-template-columns:1fr;gap:16px}
+  .tabs{flex-direction:row;flex-wrap:wrap}
+  .tab{flex:1 1 30%}
+  .band{grid-template-columns:80px minmax(0,1fr)}
+  .band .stack{grid-column:2;text-align:left}
+  .st1{grid-column:1/4}.st2{grid-column:4/7}.st3{grid-column:7/10}.st4{grid-column:10/13}
+  .process h2,.process .sub{grid-column:1/8}
+  .f-state{grid-column:1/7}.f-nav{grid-column:7/13}.f-mail{grid-column:1/7}.f-cta{grid-column:7/13}
+  .foot{grid-template-rows:200px 200px auto auto}
+  .plans{display:none}
+  .plans-m{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+  .hire h2.m-only{display:block;padding:0 var(--pad) 32px}
+  .plan-m{background:var(--surface);padding:28px 20px;display:flex;flex-direction:column}
+  .plan-m.rec{background:var(--field-2);color:var(--field-2-ink)}
+  .plan-m .pname{font-size:var(--step-lead)}
+  .plan-m .pper{color:var(--muted);margin-top:6px}
+  .plan-m.rec .pper,.plan-m.rec dt{color:#3d4a3d}
+  .plan-m dl{margin:24px 0;flex-grow:1}
+  .plan-m dt{color:var(--muted);margin-top:14px}
+  .plan-m dd{margin:2px 0 0}
+  .plan-m .btn{width:100%;padding:0 12px}
+}
+
+/* ================= Phone: its own two-column board ================= */
+@media (max-width:767px){
+  .board{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{height:auto;min-height:0;max-height:none;grid-template-rows:none}
+  .name-band{height:110px}
+  .name-band h1{font-size:26vw}
+  .links{grid-template-columns:1fr 1fr}
+  .links a{min-height:56px;padding:16px 20px}
+  .rail-l,.rail-r,.hero-photo{grid-row:auto}
+  .hero-photo{grid-column:1/-1;order:3;background:none}
+  .hero-photo .pic{position:relative;inset:auto;aspect-ratio:4/3;height:auto}
+  .statement{position:static;width:auto;padding:24px 12px 8px}
+  .rail-r{grid-column:1/-1;order:5;grid-template-rows:none;grid-template-columns:1fr 1fr}
+  .rail-r .tile{min-height:76px}
+  .r5{grid-column:1/-1;min-height:96px}
+  .rail-l{grid-column:1/-1;order:6;grid-template-rows:none;grid-template-columns:1fr 1fr}
+  .rail-l .film{aspect-ratio:3/4}
+  .intro{grid-template-rows:46svh auto auto}
+  .t-slogan{grid-column:1/-1;grid-row:1}
+  .t-figure{grid-column:1;grid-row:2;aspect-ratio:1}
+  .t-photo{grid-column:2;grid-row:2;aspect-ratio:1}
+  .t-text{grid-column:1/-1;grid-row:3;grid-template-columns:1fr;padding:48px 0 0}
+  .t-text .lead,.t-text .note{grid-column:1;padding:0 var(--pad)}
+  .t-text .lead{font-size:var(--step-body)}
+  .t-text .note{order:2;margin-top:24px}
+  .wall{padding-top:120px}
+  .wall-head{flex-direction:column;align-items:stretch;gap:24px}
+  .wall-head .btn{width:100%}
+  .agenda{grid-template-columns:1fr;gap:12px;margin-top:32px}
+  .tabs{display:grid;grid-template-columns:1fr 1fr}
+  .tab{min-height:64px;padding:10px 14px}
+  .no-js .tabs{display:none}
+  .band{grid-template-columns:1fr;gap:6px;padding:16px}
+  .band .stack{text-align:left}
+  .process{padding-top:120px}
+  .stages{grid-template-columns:1fr;row-gap:28px}
+  .process h2,.process .sub,.st1,.st2,.st3,.st4{grid-column:1;grid-row:auto}
+  .process .sub{margin-top:-8px}
+  .st1 .frame{height:34vw}.st2 .frame{height:46vw}.st3 .frame{height:62vw}.st4 .frame{height:78vw}
+  .stage p{min-height:0;max-width:none}
+  .marquee{margin-top:120px}
+  .hire{padding-top:120px}
+  .plans{display:none}
+  .plans-m{display:grid;grid-template-columns:1fr;gap:48px}
+  .hire h2.m-only{display:block;padding:0 var(--pad) 24px}
+  .plan-m{background:var(--surface);padding:28px var(--pad)}
+  .plan-m.rec{background:var(--field-2);color:var(--field-2-ink)}
+  .plan-m .pname{font-size:var(--step-head);line-height:.95;letter-spacing:-0.05em}
+  .plan-m .pper{color:var(--muted);margin-top:6px}
+  .plan-m.rec .pper,.plan-m.rec dt{color:#3d4a3d}
+  .plan-m dl{margin:24px 0}
+  .plan-m dt{color:var(--muted);margin-top:14px}
+  .plan-m dd{margin:2px 0 0}
+  .plan-m .btn{width:100%}
+  .faq{margin-top:120px}
+  .q-head{min-height:30svh;padding:32px var(--pad)}
+  .q{grid-template-columns:1fr;padding:32px calc(var(--edge) + var(--pad));gap:12px}
+  .q h3,.q p{grid-column:1}
+  .strip{height:110px;padding:0 var(--edge)}
+  .strip figure:nth-child(n+5){display:none}
+  .order-body{padding-top:48px}
+  .ticket{grid-template-columns:1fr;gap:6px}
+  .ticket .t-label,.ticket .t-list,.ticket .t-plan{grid-column:1}
+  .bar{grid-template-columns:1fr}
+  .bar input,.bar .send{height:60px}
+  .foot{grid-template-rows:none}
+  .f-word{grid-column:1/-1;order:2}
+  .f-word p{font-size:26vw}
+  .f-cta{grid-column:1/-1;order:1;min-height:180px}
+  .f-nav{grid-column:1;order:3}.f-mail{grid-column:2;order:4}
+  .f-state{grid-column:1/-1;order:5}
+  .f-nav,.f-mail,.f-state{min-height:200px}
+  .f-word{height:110px}
+  .f-credits{order:7}
+}
+@media (min-width:1100px){.m-only{display:none}}
+</style>
+</head>
+<body class="no-js">
+<a class="skip" href="#main">Skip to main content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M3 12h17M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/></symbol>
+  <symbol id="arrow-big" viewBox="0 0 64 64"><path d="M6 32h50M34 10l22 22-22 22" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="square"/></symbol>
+</svg>
+
+<!-- ============ HERO ============ -->
+<header class="board hero" id="top">
+  <div class="tile name-band" data-r>
+    <h1>Stackforge<span class="sr-only">, software studio</span></h1>
+  </div>
+  <nav class="links" aria-label="Sections">
+    <a href="#wall" data-r>The tool wall</a>
+    <a href="#process" data-r>How a job moves</a>
+    <a href="#hire" data-r>Ways to hire us</a>
+    <a href="#questions" data-r>Questions</a>
+  </nav>
+
+  <figure class="hero-photo" data-r>
+    <img class="pic" src="assets/5-tools-at-a-artist-blacksmith-place.jpg" width="1920" height="1440" alt="Hand-forged tongs, hammers and dies hung and shelved along the wooden wall of a smithy" fetchpriority="high">
+    <figcaption class="statement">
+      <p>One studio for all 28 kinds of software you need.</p>
+      <p>Web, mobile, AI, cloud, security, bots, games, Web3 and IoT, built and kept running by one team.</p>
+    </figcaption>
+  </figure>
+
+  <div class="rail-r">
+    <p class="tile r1" data-r>Web, mobile and desktop apps</p>
+    <p class="tile r2" data-r>AI features and the pipelines behind them</p>
+    <p class="tile r3" data-r>Cloud, DevOps and security</p>
+    <p class="tile r4" data-r>Bots, games, Web3 and IoT</p>
+    <a class="tile r5" href="#order" data-r>Start a work order <svg class="arrow" aria-hidden="true"><use href="#arrow"/></svg></a>
+  </div>
+
+  <div class="rail-l">
+    <div class="tile film" data-r>
+      <video class="pic" autoplay muted loop playsinline preload="metadata" poster="assets/blacksmith-scene-1893-poster.jpg" width="640" height="480" aria-hidden="true"><source src="assets/blacksmith-scene-1893.webm" type="video/webm"></video>
+    </div>
+    <div class="tile" data-r>
+      <ul class="facts">
+        <li>28 services, one bench</li>
+        <li>One lead answers for it all</li>
+        <li>A demo every week</li>
+        <li>Your code from the first commit</li>
+        <li>A reply within one business day</li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<!-- ============ INTRO ============ -->
+<section class="board intro" aria-labelledby="intro-h">
+  <div class="tile t-slogan" data-r><h2 class="head" id="intro-h">One shop.<br>No hand-offs.</h2></div>
+  <div class="tile t-figure" data-r><p class="head" aria-hidden="true">28</p><p class="small">services, all at one bench</p></div>
+  <figure class="tile t-photo" data-r><img class="pic" src="assets/the-blacksmith-s-forge.jpg" width="1920" height="1426" alt="Painting of two smiths working together at a single anvil, the forge glowing behind them" loading="lazy"></figure>
+  <div class="t-text">
+    <p class="small soft note" data-r>Pictured: Johann Hamza, The Blacksmith's Forge, Vienna, 1900.</p>
+    <p class="lead" data-r>Most software needs more than one specialist. A web product needs a backend, a database, a cloud account, sign-in, tests, and someone to keep it fast after launch. Hiring five vendors for that means five contracts, five ways of working, and gaps between them where the bugs live. Stackforge keeps every discipline at one bench. The people who sketch the screens sit with the people who write the API and the ones who run the servers, and one lead answers for all of it. You get one plan, one weekly demo, and code that is yours from the first commit.</p>
+  </div>
+</section>
+
+<!-- ============ THE TOOL WALL (the live part) ============ -->
+<section class="wall" id="wall" aria-labelledby="wall-h">
+  <div class="wall-head">
+    <h2 class="head" id="wall-h" data-r><span class="soft">Twenty-eight tools,</span> one wall.</h2>
+    <a class="btn" href="#order" data-r>Send the work order <span class="count-pill" data-count aria-label="0 services picked">0</span></a>
+  </div>
+  <p class="wall-sub" data-r>Pick a shelf, then tap every tool you need. Each one goes onto the work order at the foot of the page, ready to send.</p>
+
+  <div class="agenda">
+    <div class="tabs" role="tablist" aria-label="Shelves of services">
+      <button class="tab" role="tab" id="t-build" aria-controls="p-build" aria-selected="true">Product engineering <span class="small">9 services</span></button>
+      <button class="tab" role="tab" id="t-ai" aria-controls="p-ai" aria-selected="false" tabindex="-1">AI and data <span class="small">3 services</span></button>
+      <button class="tab" role="tab" id="t-cloud" aria-controls="p-cloud" aria-selected="false" tabindex="-1">Cloud and architecture <span class="small">4 services</span></button>
+      <button class="tab" role="tab" id="t-quality" aria-controls="p-quality" aria-selected="false" tabindex="-1">Quality and security <span class="small">3 services</span></button>
+      <button class="tab" role="tab" id="t-special" aria-controls="p-special" aria-selected="false" tabindex="-1">Specialist builds <span class="small">5 services</span></button>
+      <button class="tab" role="tab" id="t-design" aria-controls="p-design" aria-selected="false" tabindex="-1">Design and docs <span class="small">4 services</span></button>
+    </div>
+
+    <div class="panels">
+      <div class="panel" role="tabpanel" id="p-build" aria-labelledby="t-build">
+        <h3>Product engineering</h3>
+        <ul class="bands">
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Frontend</span><span class="note">Fast, accessible interfaces for every screen size.</span></span><span class="stack">React, Next.js, Vue</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Backend</span><span class="note">Services and business logic that hold up under traffic.</span></span><span class="stack">Node.js, Python, Go</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Databases</span><span class="note">Schemas, safe migrations and quick queries.</span></span><span class="stack">PostgreSQL, MongoDB, Redis</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Full-stack projects</span><span class="note">One team from the first idea to a launched product.</span></span><span class="stack">MVPs, SaaS, platforms</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Mobile apps</span><span class="note">iOS and Android, shipped all the way to the stores.</span></span><span class="stack">React Native, Flutter, Swift</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Desktop apps</span><span class="note">Windows, macOS and Linux, with updates built in.</span></span><span class="stack">Electron, Tauri, .NET</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">APIs and integrations</span><span class="note">Clean APIs, and links to the tools you already pay for.</span></span><span class="stack">REST, GraphQL, webhooks</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Real-time and networking apps</span><span class="note">Chat, collaboration, streaming and multiplayer.</span></span><span class="stack">WebSockets, WebRTC, gRPC</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Browser extensions</span><span class="note">Built to pass store review the first time.</span></span><span class="stack">Chrome, Firefox, Edge</span></button></li>
+        </ul>
+      </div>
+      <div class="panel" role="tabpanel" id="p-ai" aria-labelledby="t-ai">
+        <h3>AI and data</h3>
+        <ul class="bands">
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">AI-powered apps</span><span class="note">LLM features, search over your own data, agents and copilots.</span></span><span class="stack">LLMs, RAG, agents</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Machine learning engineering (MLOps)</span><span class="note">Pipelines that train, ship, watch and retrain models.</span></span><span class="stack">MLflow, Kubeflow, SageMaker</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Web scraping and data pipelines</span><span class="note">Collect, clean and move data on a schedule.</span></span><span class="stack">Playwright, Airflow, ETL</span></button></li>
+        </ul>
+      </div>
+      <div class="panel" role="tabpanel" id="p-cloud" aria-labelledby="t-cloud">
+        <h3>Cloud and architecture</h3>
+        <ul class="bands">
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">DevOps and deployment</span><span class="note">CI/CD and infrastructure as code, for calm releases.</span></span><span class="stack">Docker, Kubernetes, Terraform</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Cloud services</span><span class="note">Architecture, migration and cost control.</span></span><span class="stack">AWS, GCP, Azure</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">System design and architecture</span><span class="note">Blueprints that hold up as users and data grow.</span></span><span class="stack">Reviews, scaling, roadmaps</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Microservices</span><span class="note">Clear service boundaries, messaging and tracing.</span></span><span class="stack">Kafka, RabbitMQ, OpenTelemetry</span></button></li>
+        </ul>
+      </div>
+      <div class="panel" role="tabpanel" id="p-quality" aria-labelledby="t-quality">
+        <h3>Quality and security</h3>
+        <ul class="bands">
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Code quality and testing</span><span class="note">Tests and reviews that catch bugs before users do.</span></span><span class="stack">Jest, Playwright, Pytest</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Security and authentication</span><span class="note">Sign-in, access control, audits and hardening.</span></span><span class="stack">OAuth, SSO, OWASP</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Performance optimization</span><span class="note">Faster pages, queries and services, measured before and after.</span></span><span class="stack">Profiling, caching, Web Vitals</span></button></li>
+        </ul>
+      </div>
+      <div class="panel" role="tabpanel" id="p-special" aria-labelledby="t-special">
+        <h3>Specialist builds</h3>
+        <ul class="bands">
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Tooling and automation</span><span class="note">CLIs and internal tools that take busywork away.</span></span><span class="stack">CLIs, scripts, internal tools</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Bots</span><span class="note">Bots that live where your users already talk.</span></span><span class="stack">Discord, Telegram, WhatsApp, Slack</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Game development</span><span class="note">Gameplay, tools and multiplayer for 2D, 3D and the web.</span></span><span class="stack">Unity, Godot, web games</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Blockchain and Web3</span><span class="note">Smart contracts and dApps, tested hard before launch.</span></span><span class="stack">Solidity, Hardhat, dApps</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Embedded systems and IoT</span><span class="note">Firmware and connected devices, from board to dashboard.</span></span><span class="stack">Arduino, Raspberry Pi, MQTT</span></button></li>
+        </ul>
+      </div>
+      <div class="panel" role="tabpanel" id="p-design" aria-labelledby="t-design">
+        <h3>Design and docs</h3>
+        <ul class="bands">
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">UI/UX design and prototyping</span><span class="note">Research, wireframes, Figma prototypes and design systems.</span></span><span class="stack">Figma, prototypes, design systems</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Open-source contributions</span><span class="note">Publish, maintain and contribute upstream.</span></span><span class="stack">GitHub, packages, maintenance</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Documentation and technical writing</span><span class="note">Docs sites, API references and guides.</span></span><span class="stack">Docs sites, API references, guides</span></button></li>
+          <li><button class="band" aria-pressed="false"><span class="state"><i></i>Add</span><span><span class="title">Portfolio and career</span><span class="note">Portfolio sites, GitHub profiles and interview practice.</span></span><span class="stack">Portfolios, resumes, mock interviews</span></button></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS: tiles that grow ============ -->
+<section class="process" id="process" aria-labelledby="process-h">
+  <div class="stages">
+    <h2 class="head" id="process-h" data-r>How a job moves</h2>
+    <p class="sub" data-r>The way a smith works iron, and the way we work software: draw it, shape it, test it in the fire, then keep it sharp.</p>
+    <ol class="stage-list">
+    <li class="stage st1" data-r>
+      <div class="frame plate"><img class="pic" src="assets/encyclopedie-volume-3-186.jpg" width="1920" height="1308" alt="Engraved plan of an iron furnace from Diderot's Encyclopédie" loading="lazy" style="object-position:62% 50%"></div>
+      <h3>Drawn up</h3>
+      <p>A free call, then a written plan: scope, services, timeline and estimate.</p>
+    </li>
+    <li class="stage st2" data-r>
+      <div class="frame"><img class="pic" src="assets/blacksmith-working-3.jpg" width="1920" height="1920" alt="A smith raises his hammer over a glowing iron rod on the anvil" loading="lazy" style="object-position:50% 40%"></div>
+      <h3>Hammered out</h3>
+      <p>Weekly demos, a shared board, tested code merged every day.</p>
+    </li>
+    <li class="stage st3" data-r>
+      <div class="frame"><img class="pic" src="assets/an-iron-forge.jpg" width="1920" height="1503" alt="Mezzotint of an iron forge at night, a white-hot bar lighting the workers and a family watching" loading="lazy" style="object-position:50% 60%"></div>
+      <h3>Hardened in the fire</h3>
+      <p>Load tests, a security review and automated deploys. Monitoring is on before launch.</p>
+    </li>
+    <li class="stage st4" data-r>
+      <div class="frame"><img class="pic" src="assets/0-typical-smithy-in-finland.jpg" width="1920" height="1440" alt="A working smithy with rows of tongs hung above the hearth and two anvils ready on their stumps" loading="lazy" style="object-position:40% 50%"></div>
+      <h3>Kept sharp</h3>
+      <p>Updates, speed work and new features on a schedule that fits your roadmap.</p>
+    </li>
+    </ol>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Drawn up, hammered out, hardened in the fire, kept sharp.</span>
+    <span>One shop for all 28 kinds of software.</span>
+    <span aria-hidden="true">Drawn up, hammered out, hardened in the fire, kept sharp.</span>
+    <span aria-hidden="true">One shop for all 28 kinds of software.</span>
+  </div>
+</div>
+
+<!-- ============ WAYS TO HIRE US ============ -->
+<section class="hire" id="hire" aria-labelledby="hire-h">
+  <table class="plans">
+    <colgroup><col class="c-what"><col><col><col></colgroup>
+    <thead>
+      <tr>
+        <th class="corner" scope="col"><h2 class="head" id="hire-h" data-r>Ways to hire us</h2></th>
+        <th scope="col"><span class="pname">Sprint</span><span class="pprice">Fixed quote</span><span class="pper">per project</span></th>
+        <th scope="col" class="rec"><span class="pname">Dedicated team</span><span class="pprice">Monthly</span><span class="pper">most clients start here</span></th>
+        <th scope="col"><span class="pname">Care retainer</span><span class="pprice">Monthly</span><span class="pper">after launch</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">Length</th><td>Two to six weeks</td><td class="rec">Three months or more</td><td>Ongoing, cancel any month</td></tr>
+      <tr><th scope="row">Scope</th><td>Fixed and agreed up front</td><td class="rec">Set again every sprint</td><td>Upkeep and small features</td></tr>
+      <tr><th scope="row">Services</th><td>One or two</td><td class="rec">Any mix of the 28</td><td>The ones you launched with</td></tr>
+      <tr><th scope="row">Team</th><td>Two or three people</td><td class="rec">A lead, plus specialists as needed</td><td>A named engineer on call</td></tr>
+      <tr><th scope="row">Reporting</th><td>Weekly demo</td><td class="rec">Weekly demo and a shared roadmap</td><td>A monthly report</td></tr>
+      <tr><th scope="row">Good for</th><td>An MVP, a bot, an audit</td><td class="rec">Products that keep growing</td><td>Software already in use</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><td></td>
+        <td><a class="btn btn-quiet" href="#order" data-plan="Sprint">Plan a sprint</a></td>
+        <td class="rec"><a class="btn" href="#order" data-plan="Dedicated team">Build a team</a></td>
+        <td><a class="btn btn-quiet" href="#order" data-plan="Care retainer">Talk about upkeep</a></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <h2 class="head m-only">Ways to hire us</h2>
+  <div class="plans-m">
+    <div class="plan-m">
+      <h3 class="pname">Sprint</h3><p class="pper">Fixed quote, per project</p>
+      <dl><dt>Length</dt><dd>Two to six weeks</dd><dt>Scope</dt><dd>Fixed and agreed up front</dd><dt>Services</dt><dd>One or two</dd><dt>Team</dt><dd>Two or three people</dd><dt>Good for</dt><dd>An MVP, a bot, an audit</dd></dl>
+      <a class="btn btn-quiet" href="#order" data-plan="Sprint" >Plan a sprint</a>
+    </div>
+    <div class="plan-m rec">
+      <h3 class="pname">Dedicated team</h3><p class="pper">Monthly, most clients start here</p>
+      <dl><dt>Length</dt><dd>Three months or more</dd><dt>Scope</dt><dd>Set again every sprint</dd><dt>Services</dt><dd>Any mix of the 28</dd><dt>Team</dt><dd>A lead, plus specialists as needed</dd><dt>Good for</dt><dd>Products that keep growing</dd></dl>
+      <a class="btn" href="#order" data-plan="Dedicated team">Build a team</a>
+    </div>
+    <div class="plan-m">
+      <h3 class="pname">Care retainer</h3><p class="pper">Monthly, after launch</p>
+      <dl><dt>Length</dt><dd>Ongoing, cancel any month</dd><dt>Scope</dt><dd>Upkeep and small features</dd><dt>Services</dt><dd>The ones you launched with</dd><dt>Team</dt><dd>A named engineer on call</dd><dt>Good for</dt><dd>Software already in use</dd></dl>
+      <a class="btn btn-quiet" href="#order" data-plan="Care retainer">Talk about upkeep</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUESTIONS ============ -->
+<section class="faq" id="questions" aria-labelledby="faq-h">
+  <div class="q-head"><h2 class="head" id="faq-h" data-r>Questions, answered</h2></div>
+  <div class="q"><h3 data-r>Can you take over an existing codebase?</h3><p data-r>Yes. We start with a short review of the code and the architecture, tell you what we found, then propose a plan to steady it and build on it.</p></div>
+  <div class="q"><h3 data-r>Do I need to know which services I need?</h3><p data-r>No. Bring the problem or the goal. In the first call we pick the smallest set of services that gets you there, so the work order can go out empty.</p></div>
+  <div class="q"><h3 data-r>Who owns the code and the designs?</h3><p data-r>You do, from the first commit. Everything lives in your repositories and your cloud accounts, never ours.</p></div>
+  <div class="q"><h3 data-r>How do you price the work?</h3><p data-r>Sprints get a fixed quote. Dedicated teams and care retainers are billed monthly. You see a written estimate before you commit to anything.</p></div>
+  <div class="q"><h3 data-r>Can you work alongside our developers?</h3><p data-r>Yes. We join your channels, your board and your code reviews, and we hand the work over to your team whenever you are ready.</p></div>
+  <div class="q"><h3 data-r>What does a normal week look like?</h3><p data-r>A shared channel for questions, a board you can check at any time, and a demo every week where you see working software, not slides.</p></div>
+  <div class="q"><h3 data-r>What if I only need one small thing?</h3><p data-r>That is what a sprint is for: one bot, one extension, one audit or one speed pass, done in two to six weeks.</p></div>
+</section>
+
+<!-- ============ WORK ORDER ============ -->
+<section class="order" id="order" aria-labelledby="order-h">
+  <div class="strip" aria-hidden="true">
+    <figure style="--w:1.33"><img class="pic" src="assets/an-iron-forge.jpg" alt="" loading="lazy" style="object-position:35% 70%"></figure>
+    <figure style="--w:1"><img class="pic" src="assets/blacksmith-working-3.jpg" alt="" loading="lazy" style="object-position:70% 80%"></figure>
+    <figure style="--w:.75"><img class="pic" src="assets/5-tools-at-a-artist-blacksmith-place.jpg" alt="" loading="lazy" style="object-position:20% 20%"></figure>
+    <figure class="plate" style="--w:1.5;background:var(--pale)"><img class="pic" src="assets/encyclopedie-volume-3-186.jpg" alt="" loading="lazy" style="object-position:15% 75%"></figure>
+    <figure style="--w:1"><img class="pic" src="assets/the-blacksmith-s-forge.jpg" alt="" loading="lazy" style="object-position:48% 55%"></figure>
+    <figure style="--w:.75"><img class="pic" src="assets/0-typical-smithy-in-finland.jpg" alt="" loading="lazy" style="object-position:45% 15%"></figure>
+    <figure style="--w:1.33"><img class="pic" src="assets/blacksmith-scene-1893-poster.jpg" alt="" loading="lazy"></figure>
+    <figure style="--w:1"><img class="pic" src="assets/5-tools-at-a-artist-blacksmith-place.jpg" alt="" loading="lazy" style="object-position:85% 90%"></figure>
+    <figure style="--w:.75"><img class="pic" src="assets/the-blacksmith-s-forge.jpg" alt="" loading="lazy" style="object-position:88% 30%"></figure>
+    <figure style="--w:1.5"><img class="pic" src="assets/0-typical-smithy-in-finland.jpg" alt="" loading="lazy" style="object-position:80% 80%"></figure>
+  </div>
+
+  <div class="order-body">
+    <h2 class="head" id="order-h" data-r>Send a work order</h2>
+    <div class="ticket" data-r>
+      <p class="t-label">On the order</p>
+      <p class="t-list" id="order-list" aria-live="polite">Nothing yet. Pick tools from the wall above, or just tell us what you are building.</p>
+      <p class="t-plan small" id="order-plan" hidden></p>
+    </div>
+    <!-- Without a backend the order goes out by email; the form also works without script. -->
+    <form class="bar" id="order-form" action="mailto:hello@stackforge.studio" method="post" enctype="text/plain" novalidate data-r>
+      <div class="cell">
+        <label class="sr-only" for="o-name">Your name</label>
+        <input id="o-name" name="name" type="text" autocomplete="name" placeholder="Your name" required aria-describedby="e-name">
+        <span class="small err" id="e-name"></span>
+        <span class="small">We reply within one business day.</span>
+      </div>
+      <div class="cell">
+        <label class="sr-only" for="o-email">Work email</label>
+        <input id="o-email" name="email" type="email" autocomplete="email" placeholder="Work email" required aria-describedby="e-email">
+        <span class="small err" id="e-email"></span>
+      </div>
+      <div class="cell">
+        <button class="send" type="submit">Send the order <svg class="arrow" aria-hidden="true"><use href="#arrow"/></svg></button>
+        <span class="small">Opens your email with the order filled in.</span>
+      </div>
+    </form>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="board foot">
+  <div class="tile f-state"><p>Built at one bench, from the first sketch to the last patch.</p><p class="small soft">© <span id="year">2026</span> Stackforge</p></div>
+  <nav class="tile f-nav" aria-label="Footer"><ul>
+    <li><a href="#wall">The tool wall</a></li>
+    <li><a href="#process">How a job moves</a></li>
+    <li><a href="#hire">Ways to hire us</a></li>
+    <li><a href="#questions">Questions</a></li>
+    <li><a href="#order">Work order</a></li>
+  </ul></nav>
+  <div class="tile f-mail"><p class="small soft">Write to us, Monday to Friday. Every message answered within one business day.</p><a href="mailto:hello@stackforge.studio">hello@stackforge.studio</a></div>
+  <a class="tile f-cta" href="#order"><span class="lead">Start a work order</span><svg class="arrow" aria-hidden="true"><use href="#arrow-big"/></svg></a>
+  <div class="tile f-word"><p aria-hidden="true">Stackforge</p></div>
+  <div class="f-credits">
+    <p class="small">Pictures and footage: <a href="https://commons.wikimedia.org/wiki/File:5_tools_at_a_artist_blacksmith_place.JPG">“5 tools at a artist blacksmith place”</a> and <a href="https://commons.wikimedia.org/wiki/File:0_typical_smithy_in_finland.JPG">“0 typical smithy in finland”</a> by Wasapl, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Blacksmith_working_3.jpg">“Blacksmith working 3”</a> by Gurdeepdali, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/wiki/File:An_Iron_Forge_-_DPLA_-_fb546e5ff5f69960edb09f59e1e77949.jpg">“An Iron Forge”</a> by Richard Earlom after Joseph Wright of Derby; <a href="https://commons.wikimedia.org/wiki/File:Johann_Hamza_blacksmiths_forge_1900.jpg">“The Blacksmith's Forge”</a> by Johann Hamza; <a href="https://commons.wikimedia.org/wiki/File:Encyclopedie_volume_3-186.jpg">Encyclopédie, Forges, plate I</a>; <a href="https://commons.wikimedia.org/wiki/File:Blacksmith_Scene_(1893).webm">“Blacksmith Scene” (1893)</a> by William K. L. Dickson; all public domain unless noted, via Wikimedia Commons. Pictures shown in monochrome.</p>
+  </div>
+</footer>
+
+<script>
+document.body.classList.remove('no-js');
+document.documentElement.classList.add('js');
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var video = document.querySelector('.film video');
+  if (reduce && video) { video.removeAttribute('autoplay'); video.pause(); }
+
+  /* Entrances: the parts of each block arrive in reading order, 75ms apart. */
+  var groups = document.querySelectorAll('.hero, .intro, .wall, .process, .hire, .faq, .order-body, .q');
+  groups.forEach(function(g){
+    g.querySelectorAll('[data-r]').forEach(function(el, i){ el.style.setProperty('--d', Math.min(i, 10) * 75 + 'ms'); });
+  });
+  var all = document.querySelectorAll('[data-r]');
+  if (reduce || !('IntersectionObserver' in window)) { all.forEach(function(el){ el.classList.add('in'); }); }
+  else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    all.forEach(function(el){ io.observe(el); });
+    setTimeout(function(){ all.forEach(function(el){ if (el.getBoundingClientRect().top < innerHeight) el.classList.add('in'); }); }, 60);
+  }
+
+  /* Shelves (tabs) */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var panels = document.querySelectorAll('.panel');
+  function select(tab, focus){
+    tabs.forEach(function(t){ var on = t === tab; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; });
+    panels.forEach(function(p){ p.hidden = p.id !== tab.getAttribute('aria-controls'); });
+    if (focus) tab.focus();
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ select(t); });
+    t.addEventListener('keydown', function(e){
+      var k = e.key, n = null;
+      if (k === 'ArrowDown' || k === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+      if (k === 'ArrowUp' || k === 'ArrowLeft') n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (k === 'Home') n = tabs[0];
+      if (k === 'End') n = tabs[tabs.length - 1];
+      if (n) { e.preventDefault(); select(n, true); }
+    });
+  });
+  select(tabs[0]);
+
+  /* The work order: tools taken down from the wall */
+  var picked = [], plan = '';
+  var list = document.getElementById('order-list'), planEl = document.getElementById('order-plan');
+  var counts = document.querySelectorAll('[data-count]');
+  var bands = Array.prototype.slice.call(document.querySelectorAll('.band'));
+  function render(){
+    counts.forEach(function(c){ c.textContent = picked.length; c.setAttribute('aria-label', picked.length + (picked.length === 1 ? ' service' : ' services') + ' picked'); });
+    if (!picked.length) list.textContent = 'Nothing yet. Pick tools from the wall above, or just tell us what you are building.';
+    else {
+      list.textContent = picked.join(', ') + '. ';
+      var clr = document.createElement('button'); clr.type = 'button'; clr.className = 'clear'; clr.textContent = 'Clear the order';
+      clr.addEventListener('click', function(){ picked = []; bands.forEach(function(b){ setBand(b, false); }); render(); });
+      list.appendChild(clr);
+    }
+    planEl.hidden = !plan; planEl.textContent = plan ? 'Way of working: ' + plan : '';
+  }
+  function setBand(b, on){
+    b.setAttribute('aria-pressed', on);
+    b.querySelector('.state').lastChild.textContent = on ? 'Added' : 'Add';
+  }
+  bands.forEach(function(b){
+    b.addEventListener('click', function(){
+      var name = b.querySelector('.title').textContent, on = b.getAttribute('aria-pressed') !== 'true';
+      setBand(b, on);
+      if (on) picked.push(name); else picked = picked.filter(function(x){ return x !== name; });
+      render();
+    });
+  });
+  document.querySelectorAll('[data-plan]').forEach(function(a){
+    a.addEventListener('click', function(){ plan = a.getAttribute('data-plan'); render(); });
+  });
+
+  /* Send: check the two fields, then open an email with the order written out. */
+  var form = document.getElementById('order-form');
+  var checks = {
+    'o-name': function(v){ return v.trim() ? '' : 'Please add your name.'; },
+    'o-email': function(v){ return !v.trim() ? 'Please add your email.' : (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'That email looks incomplete, like name@company.com.'); }
+  };
+  function check(id){
+    var el = document.getElementById(id), msg = checks[id](el.value);
+    document.getElementById('e-' + id.slice(2)).textContent = msg;
+    el.setAttribute('aria-invalid', !!msg); return !msg;
+  }
+  Object.keys(checks).forEach(function(id){
+    var el = document.getElementById(id);
+    el.addEventListener('blur', function(){ if (el.value) check(id); });
+    el.addEventListener('input', function(){ if (el.getAttribute('aria-invalid') === 'true') check(id); });
+  });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var bad = Object.keys(checks).filter(function(id){ return !check(id); });
+    if (bad.length) { document.getElementById(bad[0]).focus(); return; }
+    var name = document.getElementById('o-name').value.trim(), email = document.getElementById('o-email').value.trim();
+    var subject = 'Work order from ' + name + (picked.length ? ': ' + picked.slice(0, 3).join(', ') + (picked.length > 3 ? ' and ' + (picked.length - 3) + ' more' : '') : '');
+    var body = 'Name: ' + name + '\nEmail: ' + email + '\n\nServices on the order:\n' + (picked.length ? picked.map(function(p){ return '- ' + p; }).join('\n') : '- Not sure yet') + (plan ? '\n\nWay of working: ' + plan : '') + '\n\nWhat we are building:\n';
+    window.location.href = 'mailto:hello@stackforge.studio?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>

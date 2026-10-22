@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stackforge Product Studio</title>
+<meta name="description" content="One senior team for 28 engineering services: web, mobile, AI, cloud, security, Web3, IoT and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- Design tokens (UI/UX Pro Max: Glassmorphism · Trust blue + orange CTA) ---------- */
+:root{
+  --color-primary:#2563EB; --color-on-primary:#FFFFFF;
+  --color-secondary:#3B82F6;
+  --color-accent:#EA580C; --color-accent-hover:#F97316; --color-on-accent:#0B0F19;
+  --color-bg:#F8FAFC; --color-fg:#1E293B; --color-heading:#0F172A;
+  --color-card:rgba(255,255,255,.62); --color-card-solid:#FFFFFF;
+  --color-card-border:rgba(255,255,255,.75);
+  --color-muted:#E9EFF8; --color-muted-fg:#475569;
+  --color-border:#E2E8F0; --color-ring:#2563EB;
+  --color-danger:#B91C1C; --color-success:#15803D;
+  --blob-1:#93C5FD; --blob-2:#C4B5FD; --blob-3:#FDBA74;
+  --shadow-sm:0 1px 2px rgba(15,23,42,.06);
+  --shadow-md:0 8px 24px -8px rgba(15,23,42,.14);
+  --shadow-lg:0 24px 60px -20px rgba(30,58,138,.28);
+  --glass-blur:16px;
+  --radius-sm:10px; --radius-md:16px; --radius-lg:24px; --radius-pill:999px;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:24px;
+  --space-6:32px; --space-7:48px; --space-8:64px; --space-9:96px;
+  --font-head:'Poppins',system-ui,sans-serif; --font-body:'Open Sans',system-ui,sans-serif;
+  --ease-out:cubic-bezier(.22,1,.36,1); --dur-fast:160ms; --dur-med:280ms; --dur-slow:520ms;
+  --z-nav:40; --z-menu:50;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --color-primary:#3B82F6; --color-secondary:#60A5FA;
+    --color-accent:#FB923C; --color-accent-hover:#FDBA74; --color-on-accent:#0B0F19;
+    --color-bg:#0B1120; --color-fg:#CBD5E1; --color-heading:#F1F5F9;
+    --color-card:rgba(30,41,59,.55); --color-card-solid:#111A2E;
+    --color-card-border:rgba(148,163,184,.16);
+    --color-muted:#1E293B; --color-muted-fg:#94A3B8;
+    --color-border:rgba(148,163,184,.18); --color-ring:#60A5FA;
+    --color-danger:#F87171; --color-success:#4ADE80;
+    --blob-1:#1D4ED8; --blob-2:#6D28D9; --blob-3:#C2410C;
+    --shadow-md:0 8px 24px -8px rgba(0,0,0,.5); --shadow-lg:0 24px 60px -20px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --color-primary:#3B82F6; --color-secondary:#60A5FA;
+  --color-accent:#FB923C; --color-accent-hover:#FDBA74; --color-on-accent:#0B0F19;
+  --color-bg:#0B1120; --color-fg:#CBD5E1; --color-heading:#F1F5F9;
+  --color-card:rgba(30,41,59,.55); --color-card-solid:#111A2E;
+  --color-card-border:rgba(148,163,184,.16);
+  --color-muted:#1E293B; --color-muted-fg:#94A3B8;
+  --color-border:rgba(148,163,184,.18); --color-ring:#60A5FA;
+  --color-danger:#F87171; --color-success:#4ADE80;
+  --blob-1:#1D4ED8; --blob-2:#6D28D9; --blob-3:#C2410C;
+  --shadow-md:0 8px 24px -8px rgba(0,0,0,.5); --shadow-lg:0 24px 60px -20px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+
+/* ---------- Base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(--font-body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background-color var(--dur-med),color var(--dur-med)}
+h1,h2,h3,h4{font-family:var(--font-head);color:var(--color-heading);line-height:1.15;margin:0;letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+img,svg{display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--color-ring);outline-offset:3px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:16px;top:-60px;z-index:100;background:var(--color-primary);color:#fff;padding:10px 16px;border-radius:var(--radius-sm);font-weight:600;text-decoration:none;transition:top var(--dur-fast)}
+.skip:focus{top:16px}
+.container{width:100%;max-width:1200px;margin:0 auto;padding:0 var(--space-4)}
+@media (min-width:768px){.container{padding:0 var(--space-6)}}
+section{scroll-margin-top:88px}
+.icon{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.icon-sm{width:18px;height:18px}
+
+/* ---------- Background blobs (light source for the glass) ---------- */
+.bg-blobs{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bg-blobs span{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55}
+.bg-blobs span:nth-child(1){width:560px;height:560px;background:var(--blob-1);top:-160px;left:-120px}
+.bg-blobs span:nth-child(2){width:480px;height:480px;background:var(--blob-2);top:30%;right:-160px;opacity:.4}
+.bg-blobs span:nth-child(3){width:420px;height:420px;background:var(--blob-3);bottom:-160px;left:30%;opacity:.3}
+.grid-lines{position:absolute;inset:0;background-image:linear-gradient(var(--color-border) 1px,transparent 1px),linear-gradient(90deg,var(--color-border) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 70% 60% at 50% 0%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 0%,#000 30%,transparent 75%);opacity:.6}
+
+/* ---------- Glass surface ---------- */
+.glass{background:var(--color-card);border:1px solid var(--color-card-border);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);backdrop-filter:blur(var(--glass-blur)) saturate(160%);box-shadow:var(--shadow-md)}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);min-height:48px;padding:0 var(--space-5);border-radius:var(--radius-pill);font-family:var(--font-head);font-weight:600;font-size:15px;text-decoration:none;border:1px solid transparent;cursor:pointer;touch-action:manipulation;transition:transform var(--dur-fast) var(--ease-out),background-color var(--dur-fast),box-shadow var(--dur-fast),border-color var(--dur-fast)}
+.btn:active{transform:scale(.97)}
+.btn-accent{background:var(--color-accent);color:var(--color-on-accent);box-shadow:0 8px 20px -8px rgba(234,88,12,.6)}
+.btn-accent:hover{background:var(--color-accent-hover);box-shadow:0 12px 28px -10px rgba(234,88,12,.7)}
+.btn-ghost{background:var(--color-card);color:var(--color-heading);border-color:var(--color-border);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.btn-ghost:hover{border-color:var(--color-primary);color:var(--color-primary)}
+.btn .icon{transition:transform var(--dur-fast) var(--ease-out)}
+.btn:hover .icon-arrow{transform:translateX(3px)}
+.btn-sm{min-height:44px;padding:0 var(--space-4);font-size:14px}
+
+/* ---------- Nav ---------- */
+.nav-wrap{position:sticky;top:0;z-index:var(--z-nav);padding:var(--space-3) 0}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-2) var(--space-2) var(--space-2) var(--space-4);border-radius:var(--radius-pill)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--font-head);font-weight:700;font-size:18px;color:var(--color-heading)}
+.brand-mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--color-primary),#7C3AED);color:#fff}
+.brand-mark .icon{width:20px;height:20px;stroke-width:2.2}
+.nav-links{display:none;list-style:none;margin:0;padding:0;gap:var(--space-1)}
+.nav-links a{display:block;padding:10px 14px;border-radius:var(--radius-pill);text-decoration:none;font-weight:600;font-size:15px;color:var(--color-muted-fg);transition:color var(--dur-fast),background-color var(--dur-fast)}
+.nav-links a:hover{color:var(--color-heading);background:var(--color-muted)}
+.nav-links a[aria-current="true"]{color:var(--color-primary)}
+.nav-actions{display:flex;align-items:center;gap:var(--space-2)}
+.icon-btn{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-heading);transition:background-color var(--dur-fast),border-color var(--dur-fast)}
+.icon-btn:hover{background:var(--color-muted)}
+.theme-toggle .moon{display:none}
+:root[data-theme="dark"] .theme-toggle .sun{display:none}
+:root[data-theme="dark"] .theme-toggle .moon{display:block}
+.nav-cta{display:none}
+.menu-btn{display:grid}
+.mobile-menu{position:absolute;left:var(--space-4);right:var(--space-4);top:calc(100% - 4px);z-index:var(--z-menu);border-radius:var(--radius-lg);padding:var(--space-3);display:none;background:var(--color-card-solid)}
+.mobile-menu.open{display:block;animation:drop var(--dur-med) var(--ease-out)}
+.mobile-menu a{display:flex;align-items:center;min-height:48px;padding:0 var(--space-4);border-radius:var(--radius-sm);text-decoration:none;font-weight:600;color:var(--color-heading)}
+.mobile-menu a:hover{background:var(--color-muted)}
+.mobile-menu .btn{width:100%;margin-top:var(--space-2)}
+@keyframes drop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@media (min-width:960px){
+  .nav-links{display:flex}.nav-cta{display:inline-flex}.menu-btn{display:none}.mobile-menu{display:none!important}
+}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;padding:var(--space-8) 0 var(--space-9)}
+.hero-grid{display:grid;gap:var(--space-8);align-items:center}
+@media (min-width:1024px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:var(--space-7)}.hero{padding-top:var(--space-9)}}
+.eyebrow{display:inline-flex;align-items:center;gap:var(--space-2);padding:6px 14px 6px 6px;border-radius:var(--radius-pill);font-size:14px;font-weight:600;color:var(--color-heading)}
+.eyebrow .dot{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:var(--radius-pill);background:var(--color-primary);color:#fff;font-size:12px;letter-spacing:.02em}
+.hero h1{font-size:clamp(2.4rem,6vw,4.1rem);font-weight:700;margin:var(--space-5) 0 var(--space-5)}
+.grad{background:linear-gradient(100deg,var(--color-primary) 10%,#7C3AED 55%,var(--color-accent) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--color-muted-fg);max-width:56ch}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-6)}
+.hero-facts{display:flex;flex-wrap:wrap;gap:var(--space-5) var(--space-6);margin-top:var(--space-7);padding:0;list-style:none}
+.hero-facts li{display:flex;flex-direction:column}
+.hero-facts strong{font-family:var(--font-head);font-size:28px;color:var(--color-heading);line-height:1.1;font-variant-numeric:tabular-nums}
+.hero-facts span{font-size:14px;color:var(--color-muted-fg)}
+
+/* Hero visual: project board */
+.board{position:relative;border-radius:var(--radius-lg);padding:var(--space-5);box-shadow:var(--shadow-lg)}
+.board-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4)}
+.board-dots{display:flex;gap:6px}.board-dots i{width:10px;height:10px;border-radius:50%;background:var(--color-border)}
+.board-title{font-family:var(--font-head);font-weight:600;font-size:14px;color:var(--color-muted-fg)}
+.proj{display:grid;gap:var(--space-3);padding:var(--space-4);border-radius:var(--radius-md);background:var(--color-card-solid);border:1px solid var(--color-border);margin-top:var(--space-3)}
+.proj-top{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.proj-name{display:flex;align-items:center;gap:var(--space-3);font-family:var(--font-head);font-weight:600;color:var(--color-heading);font-size:15px}
+.proj-ico{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--color-muted);color:var(--color-primary)}
+.proj-ico .icon{width:20px;height:20px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:var(--radius-pill);white-space:nowrap}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.s-build{color:#1D4ED8;background:#DBEAFE}.s-ship{color:#166534;background:#DCFCE7}.s-design{color:#9A3412;background:#FFEDD5}
+:root[data-theme="dark"] .s-build{color:#93C5FD;background:rgba(59,130,246,.18)}
+:root[data-theme="dark"] .s-ship{color:#86EFAC;background:rgba(34,197,94,.16)}
+:root[data-theme="dark"] .s-design{color:#FDBA74;background:rgba(249,115,22,.16)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .s-build{color:#93C5FD;background:rgba(59,130,246,.18)}:root:not([data-theme="light"]) .s-ship{color:#86EFAC;background:rgba(34,197,94,.16)}:root:not([data-theme="light"]) .s-design{color:#FDBA74;background:rgba(249,115,22,.16)}}
+.chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:var(--radius-pill);background:var(--color-muted);color:var(--color-muted-fg)}
+.bar{height:6px;border-radius:99px;background:var(--color-muted);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--color-primary),#7C3AED);transform-origin:left;animation:grow 1.4s var(--ease-out) both .3s}
+@keyframes grow{from{transform:scaleX(0)}}
+.float{position:absolute;display:flex;align-items:center;gap:var(--space-2);padding:10px 14px;border-radius:var(--radius-md);font-size:13px;font-weight:600;color:var(--color-heading);box-shadow:var(--shadow-md)}
+.float .icon{width:18px;height:18px}
+.float-1{top:-18px;right:16px;color:var(--color-success)}
+.float-1 span{color:var(--color-heading)}
+.float-2{bottom:-20px;left:-12px}
+.float-2 .icon{color:var(--color-primary)}
+@media (max-width:520px){.float-2{left:8px}}
+
+/* ---------- Stack strip ---------- */
+.strip{padding:var(--space-6) 0;border-block:1px solid var(--color-border)}
+.strip p{text-align:center;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--color-muted-fg);margin-bottom:var(--space-4)}
+.marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.marquee-track{display:flex;gap:var(--space-7);width:max-content;animation:scroll 40s linear infinite}
+.marquee:hover .marquee-track,.marquee:focus-within .marquee-track{animation-play-state:paused}
+.marquee-track span{font-family:var(--font-head);font-weight:600;font-size:18px;color:var(--color-muted-fg);white-space:nowrap}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ---------- Section headers ---------- */
+.section{padding:var(--space-9) 0}
+@media (max-width:767px){.section{padding:var(--space-8) 0}}
+.sec-head{max-width:720px;margin:0 auto var(--space-7);text-align:center}
+.kicker{display:inline-block;font-family:var(--font-head);font-weight:600;font-size:14px;color:var(--color-primary);letter-spacing:.04em;margin-bottom:var(--space-3)}
+.sec-head h2{font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;margin-bottom:var(--space-4)}
+.sec-head p{color:var(--color-muted-fg);font-size:1.075rem}
+
+/* ---------- Value props ---------- */
+.values{display:grid;gap:var(--space-5)}
+@media (min-width:768px){.values{grid-template-columns:repeat(3,1fr)}}
+.value{padding:var(--space-6);border-radius:var(--radius-lg)}
+.value-ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--color-primary),#7C3AED);color:#fff;margin-bottom:var(--space-5)}
+.value h3{font-size:1.25rem;margin-bottom:var(--space-2)}
+.value p{color:var(--color-muted-fg)}
+
+/* ---------- Services ---------- */
+.filters{display:flex;gap:var(--space-2);overflow-x:auto;padding:4px;margin:0 auto var(--space-6);scrollbar-width:none;justify-content:flex-start;width:max-content;max-width:100%;border-radius:var(--radius-pill)}
+.filters::-webkit-scrollbar{display:none}
+.filter{flex-shrink:0;min-height:44px;padding:0 var(--space-4);border-radius:var(--radius-pill);border:0;background:transparent;font-weight:600;font-size:14px;color:var(--color-muted-fg);cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background-color var(--dur-fast),color var(--dur-fast)}
+.filter:hover{color:var(--color-heading)}
+.filter[aria-pressed="true"]{background:var(--color-primary);color:#fff}
+.filter .count{font-size:12px;padding:1px 8px;border-radius:99px;background:var(--color-muted);color:var(--color-muted-fg);font-variant-numeric:tabular-nums}
+.filter[aria-pressed="true"] .count{background:rgba(255,255,255,.22);color:#fff}
+.results-note{text-align:center;font-size:14px;color:var(--color-muted-fg);margin:-12px 0 var(--space-5)}
+.services{display:grid;gap:var(--space-4);list-style:none;margin:0;padding:0}
+@media (min-width:640px){.services{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1024px){.services{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:1280px){.services{grid-template-columns:repeat(4,1fr)}}
+.svc{position:relative;display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-5);border-radius:var(--radius-lg);height:100%;transition:transform var(--dur-med) var(--ease-out),box-shadow var(--dur-med),border-color var(--dur-med)}
+.svc:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:color-mix(in srgb,var(--color-primary) 40%,transparent)}
+.svc-top{display:flex;align-items:center;justify-content:space-between}
+.svc-ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--color-muted);color:var(--color-primary);transition:background-color var(--dur-med),color var(--dur-med)}
+.svc:hover .svc-ico{background:var(--color-primary);color:#fff}
+.svc-num{font-family:var(--font-head);font-weight:600;font-size:13px;color:var(--color-muted-fg);font-variant-numeric:tabular-nums}
+.svc h3{font-size:1.08rem;font-weight:600}
+.svc p{font-size:15px;color:var(--color-muted-fg);flex-grow:1}
+.svc[hidden]{display:none}
+.services-cta{display:flex;justify-content:center;margin-top:var(--space-7)}
+
+/* ---------- Process bento ---------- */
+.bento{display:grid;gap:var(--space-4)}
+@media (min-width:768px){.bento{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1024px){.bento{grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(220px,auto)}.b-wide{grid-column:span 2}.b-tall{grid-row:span 2}}
+.tile{padding:var(--space-6);border-radius:var(--radius-lg);display:flex;flex-direction:column;gap:var(--space-3);transition:transform var(--dur-med) var(--ease-out)}
+.tile:hover{transform:scale(1.015)}
+.step{font-family:var(--font-head);font-weight:700;font-size:13px;letter-spacing:.08em;color:var(--color-primary)}
+.tile h3{font-size:1.3rem}
+.tile p{color:var(--color-muted-fg)}
+.tile ul{list-style:none;padding:0;margin:var(--space-2) 0 0;display:grid;gap:var(--space-2)}
+.tile li{display:flex;gap:var(--space-2);align-items:flex-start;font-size:15px}
+.tile li .icon{color:var(--color-success);margin-top:3px}
+.tile-feature{background:linear-gradient(150deg,#1E3A8A,#2563EB 55%,#7C3AED);border:0;color:#E0E7FF}
+.tile-feature h3,.tile-feature .step{color:#fff}
+.tile-feature p{color:#C7D2FE}
+.tile-feature li .icon{color:#FDBA74}
+.mini-chart{margin-top:auto;display:flex;align-items:flex-end;gap:8px;height:110px;padding-top:var(--space-4)}
+.mini-chart i{flex:1;border-radius:8px 8px 4px 4px;background:rgba(255,255,255,.22)}
+.mini-chart i:last-child{background:#FDBA74}
+
+/* ---------- Engagement models ---------- */
+.plans{display:grid;gap:var(--space-5)}
+@media (min-width:900px){.plans{grid-template-columns:repeat(3,1fr);align-items:stretch}}
+.plan{padding:var(--space-6);border-radius:var(--radius-lg);display:flex;flex-direction:column;gap:var(--space-4);position:relative}
+.plan.featured{border:2px solid var(--color-primary);box-shadow:var(--shadow-lg)}
+.badge{position:absolute;top:-13px;left:var(--space-6);font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;background:var(--color-primary);color:#fff}
+.plan h3{font-size:1.35rem}
+.plan .meta{font-family:var(--font-head);font-weight:600;color:var(--color-heading);font-size:1.6rem}
+.plan .meta small{font-size:14px;color:var(--color-muted-fg);font-weight:500}
+.plan ul{list-style:none;padding:0;margin:0;display:grid;gap:var(--space-3);flex-grow:1}
+.plan li{display:flex;gap:var(--space-3);align-items:flex-start;font-size:15px}
+.plan li .icon{color:var(--color-primary);margin-top:3px}
+.plan .btn{width:100%}
+
+/* ---------- FAQ ---------- */
+.faq{max-width:820px;margin:0 auto;display:grid;gap:var(--space-3)}
+.faq details{border-radius:var(--radius-md);overflow:hidden}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:var(--space-4);padding:var(--space-5);font-family:var(--font-head);font-weight:600;color:var(--color-heading);min-height:56px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .icon{transition:transform var(--dur-med) var(--ease-out);color:var(--color-primary)}
+.faq details[open] summary .icon{transform:rotate(45deg)}
+.faq .answer{padding:0 var(--space-5) var(--space-5);color:var(--color-muted-fg);max-width:68ch}
+
+/* ---------- Contact / CTA ---------- */
+.cta-box{border-radius:32px;padding:var(--space-7) var(--space-5);display:grid;gap:var(--space-7);position:relative;overflow:hidden}
+@media (min-width:1024px){.cta-box{grid-template-columns:1fr 1fr;padding:var(--space-8)}}
+.cta-copy h2{font-size:clamp(1.9rem,4vw,2.7rem);margin-bottom:var(--space-4)}
+.cta-copy p{color:var(--color-muted-fg);font-size:1.075rem;max-width:48ch}
+.cta-list{list-style:none;padding:0;margin:var(--space-6) 0 0;display:grid;gap:var(--space-3)}
+.cta-list li{display:flex;gap:var(--space-3);align-items:center;font-weight:600;color:var(--color-heading)}
+.cta-list .icon{color:var(--color-primary)}
+form{display:grid;gap:var(--space-4);background:var(--color-card-solid);border:1px solid var(--color-border);padding:var(--space-6);border-radius:var(--radius-lg);box-shadow:var(--shadow-md)}
+.row{display:grid;gap:var(--space-4)}
+@media (min-width:560px){.row{grid-template-columns:1fr 1fr}}
+.field{display:grid;gap:6px}
+label{font-weight:600;font-size:14px;color:var(--color-heading)}
+label .req{color:var(--color-danger)}
+input,select,textarea{width:100%;min-height:48px;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--color-border);background:var(--color-bg);font-size:16px;transition:border-color var(--dur-fast),box-shadow var(--dur-fast)}
+textarea{min-height:120px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 4px color-mix(in srgb,var(--color-primary) 22%,transparent)}
+[aria-invalid="true"]{border-color:var(--color-danger)}
+.err{font-size:13px;color:var(--color-danger);font-weight:600;min-height:0}
+.err:empty{display:none}
+.helper{font-size:13px;color:var(--color-muted-fg)}
+.form-status{display:none;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4);border-radius:var(--radius-sm);font-weight:600;font-size:14px;background:color-mix(in srgb,var(--color-success) 14%,transparent);color:var(--color-success)}
+.form-status.show{display:flex}
+.btn[aria-busy="true"]{opacity:.7;pointer-events:none}
+.spinner{width:18px;height:18px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:spin .7s linear infinite;display:none}
+.btn[aria-busy="true"] .spinner{display:block}
+.btn[aria-busy="true"] .icon-arrow{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- Footer ---------- */
+footer{padding:var(--space-8) 0 var(--space-6);border-top:1px solid var(--color-border);margin-top:var(--space-9)}
+.foot{display:grid;gap:var(--space-7)}
+@media (min-width:768px){.foot{grid-template-columns:1.4fr repeat(3,1fr)}}
+.foot p{color:var(--color-muted-fg);font-size:15px;max-width:36ch;margin-top:var(--space-4)}
+.foot h4{font-size:14px;margin-bottom:var(--space-4)}
+.foot ul{list-style:none;padding:0;margin:0;display:grid;gap:var(--space-2)}
+.foot ul a{text-decoration:none;color:var(--color-muted-fg);font-size:15px;display:inline-block;padding:2px 0}
+.foot ul a:hover{color:var(--color-primary)}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--space-3);margin-top:var(--space-7);padding-top:var(--space-5);border-top:1px solid var(--color-border);font-size:14px;color:var(--color-muted-fg)}
+
+/* ---------- Scroll reveal ---------- */
+.js .reveal{opacity:0;transform:translateY(18px) scale(.98);transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out);transition-delay:calc(var(--i,0) * 50ms)}
+.js .reveal.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .js .reveal{opacity:1;transform:none}
+  .marquee-track{animation:none;flex-wrap:wrap;justify-content:center;width:auto}
+  .marquee-track [aria-hidden="true"]{display:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<!-- Icon sprite (Lucide-style, 1.75 stroke) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></symbol>
+    <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15v4M17 17h4M5 3v3M3.5 4.5h3"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol>
+    <symbol id="i-infinity" viewBox="0 0 24 24"><path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4z"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5.6 9.6A2 2 0 0 0 6.1 21.5h11.8a2 2 0 0 0 1.7-2.9L14 9V3"/><path d="M7 15h10"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5M9 8V2M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+    <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></symbol>
+    <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M19.44 7.85c-.05.32.06.65.29.88l1.57 1.57a2.4 2.4 0 0 1 0 3.41l-1.61 1.61a.98.98 0 0 1-.84.28c-.47-.07-.8-.48-.97-.93a2.5 2.5 0 1 0-3.21 3.21c.45.17.86.5.93.97a.98.98 0 0 1-.28.84l-1.61 1.61a2.4 2.4 0 0 1-3.41 0l-1.57-1.57a1.03 1.03 0 0 0-.88-.29c-.49.07-.84.5-1.02.97a2.5 2.5 0 1 1-3.24-3.24c.46-.18.9-.53.97-1.02a1.03 1.03 0 0 0-.29-.88L2.7 13.7a2.4 2.4 0 0 1 0-3.41L4.23 8.77c.24-.24.58-.35.92-.3.51.08.88.53 1.07 1.01a2.5 2.5 0 1 0 3.26-3.26c-.48-.2-.93-.56-1.01-1.07-.05-.34.06-.68.3-.92L10.3 2.7a2.4 2.4 0 0 1 3.41 0l1.57 1.57c.23.23.56.34.88.29.49-.07.84-.5 1.02-.97a2.5 2.5 0 1 1 3.24 3.24c-.46.18-.9.53-.97 1.02Z"/></symbol>
+    <symbol id="i-bot" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 16h.01M16 16h.01"/></symbol>
+    <symbol id="i-game" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="4"/><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"/></symbol>
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05M12 22.08V12"/></symbol>
+    <symbol id="i-radio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M19.07 4.93a10 10 0 0 1 0 14.14M4.93 19.07a10 10 0 0 1 0-14.14"/></symbol>
+    <symbol id="i-network" viewBox="0 0 24 24"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3M12 12V8"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.59 7.59"/><circle cx="11" cy="11" r="2"/></symbol>
+    <symbol id="i-branch" viewBox="0 0 24 24"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></symbol>
+    <symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-life" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.93 4.93 4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-anvil" viewBox="0 0 24 24"><path d="M7 10H4a3 3 0 0 1-3-3V5h13l9 2-4 3h-3v3l3 5H6l3-5v-3z"/></symbol>
+  </defs>
+</svg>
+
+<div class="bg-blobs" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav-wrap">
+  <div class="container" style="position:relative">
+    <nav class="nav glass" aria-label="Primary">
+      <a href="#top" class="brand" aria-label="Stackforge home">
+        <span class="brand-mark"><svg class="icon"><use href="#i-layers"/></svg></span>
+        Stackforge
+      </a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#engage">Engagements</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark theme">
+          <svg class="icon icon-sm sun" aria-hidden="true"><use href="#i-moon"/></svg>
+          <svg class="icon icon-sm moon" aria-hidden="true"><use href="#i-sun"/></svg>
+        </button>
+        <a href="#contact" class="btn btn-accent btn-sm nav-cta">Start a project</a>
+        <button class="icon-btn menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+        </button>
+      </div>
+    </nav>
+    <div class="mobile-menu glass" id="mobile-menu">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#engage">Engagements</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact" class="btn btn-accent">Start a project</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="grid-lines" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow glass"><span class="dot">New</span> 28 services, one accountable team</span>
+      <h1>Ship anything. <span class="grad">From pixel to production.</span></h1>
+      <p class="lead">Stackforge is a senior product studio for teams that need more than one specialist. Web, mobile, AI, cloud, security, Web3, IoT and the docs that tie it together — designed, built and supported by one crew.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-accent">Start a project <svg class="icon icon-sm icon-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a href="#services" class="btn btn-ghost">Explore all 28 services</a>
+      </div>
+      <ul class="hero-facts">
+        <li><strong>28</strong><span>services under one roof</span></li>
+        <li><strong>1</strong><span>team, one point of contact</span></li>
+        <li><strong>0</strong><span>vendor hand-offs</span></li>
+      </ul>
+    </div>
+
+    <div class="board glass reveal" aria-label="Example project board" role="img">
+      <div class="float float-1 glass"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span>All checks passing</span></div>
+      <div class="board-head">
+        <div class="board-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="board-title">Active builds</span>
+      </div>
+      <div class="proj">
+        <div class="proj-top">
+          <span class="proj-name"><span class="proj-ico"><svg class="icon"><use href="#i-layers"/></svg></span>SaaS platform</span>
+          <span class="status s-build">Building</span>
+        </div>
+        <ul class="chips"><li class="chip">Next.js</li><li class="chip">Postgres</li><li class="chip">AWS</li></ul>
+        <div class="bar"><i style="width:68%"></i></div>
+      </div>
+      <div class="proj">
+        <div class="proj-top">
+          <span class="proj-name"><span class="proj-ico"><svg class="icon"><use href="#i-spark"/></svg></span>AI support copilot</span>
+          <span class="status s-ship">Shipping</span>
+        </div>
+        <ul class="chips"><li class="chip">RAG</li><li class="chip">MLOps</li><li class="chip">Slack bot</li></ul>
+        <div class="bar"><i style="width:92%"></i></div>
+      </div>
+      <div class="proj">
+        <div class="proj-top">
+          <span class="proj-name"><span class="proj-ico"><svg class="icon"><use href="#i-phone"/></svg></span>Field-ops mobile app</span>
+          <span class="status s-design">Prototyping</span>
+        </div>
+        <ul class="chips"><li class="chip">Figma</li><li class="chip">Flutter</li><li class="chip">IoT</li></ul>
+        <div class="bar"><i style="width:34%"></i></div>
+      </div>
+      <div class="float float-2 glass"><svg class="icon" aria-hidden="true"><use href="#i-infinity"/></svg>Deployed to prod · 2m ago</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STACK STRIP ============ -->
+<div class="strip" aria-label="Technologies we work with">
+  <p>Fluent in the stack you already use</p>
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>React</span><span>Next.js</span><span>Node.js</span><span>Python</span><span>Go</span><span>PostgreSQL</span><span>Flutter</span><span>Kubernetes</span><span>AWS</span><span>GCP</span><span>Azure</span><span>Unity</span><span>Solidity</span><span>Raspberry Pi</span>
+      <span aria-hidden="true">React</span><span aria-hidden="true">Next.js</span><span aria-hidden="true">Node.js</span><span aria-hidden="true">Python</span><span aria-hidden="true">Go</span><span aria-hidden="true">PostgreSQL</span><span aria-hidden="true">Flutter</span><span aria-hidden="true">Kubernetes</span><span aria-hidden="true">AWS</span><span aria-hidden="true">GCP</span><span aria-hidden="true">Azure</span><span aria-hidden="true">Unity</span><span aria-hidden="true">Solidity</span><span aria-hidden="true">Raspberry Pi</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VALUE ============ -->
+<section class="section" aria-labelledby="why-title">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">Why Stackforge</span>
+      <h2 id="why-title">Stop stitching together five vendors</h2>
+      <p>Most products need frontend, backend, cloud, security and design at the same time. We bring every discipline to one table, so nothing falls between the cracks.</p>
+    </div>
+    <div class="values">
+      <article class="value glass reveal" style="--i:0">
+        <div class="value-ico"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></div>
+        <h3>Senior, cross-functional</h3>
+        <p>Engineers and designers who have shipped in production. You get people who make decisions, not tickets that wait.</p>
+      </article>
+      <article class="value glass reveal" style="--i:1">
+        <div class="value-ico"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg></div>
+        <h3>Outcome-first scoping</h3>
+        <p>We start from the business result you need and pick the smallest set of services that gets you there.</p>
+      </article>
+      <article class="value glass reveal" style="--i:2">
+        <div class="value-ico"><svg class="icon" aria-hidden="true"><use href="#i-life"/></svg></div>
+        <h3>We stay after launch</h3>
+        <p>Monitoring, performance tuning, security patches and new features. The team that built it keeps it healthy.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="section" id="services" aria-labelledby="svc-title" style="padding-top:0">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">Services</span>
+      <h2 id="svc-title">Everything you need to build, launch and grow</h2>
+      <p>Pick one service or combine several. Filter by area to find what fits your project.</p>
+    </div>
+
+    <div class="filters glass" role="group" aria-label="Filter services by area">
+      <button class="filter" type="button" data-filter="all" aria-pressed="true">All <span class="count">28</span></button>
+      <button class="filter" type="button" data-filter="build" aria-pressed="false">Product engineering <span class="count">9</span></button>
+      <button class="filter" type="button" data-filter="ai" aria-pressed="false">AI &amp; data <span class="count">3</span></button>
+      <button class="filter" type="button" data-filter="cloud" aria-pressed="false">Cloud &amp; architecture <span class="count">4</span></button>
+      <button class="filter" type="button" data-filter="quality" aria-pressed="false">Quality, security &amp; speed <span class="count">3</span></button>
+      <button class="filter" type="button" data-filter="special" aria-pressed="false">Specialized builds <span class="count">5</span></button>
+      <button class="filter" type="button" data-filter="design" aria-pressed="false">Design, docs &amp; growth <span class="count">4</span></button>
+    </div>
+    <p class="results-note" id="results-note" role="status" aria-live="polite">Showing all 28 services</p>
+
+    <ul class="services" id="services-list">
+      <li class="svc glass reveal" data-cat="build"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg></span><span class="svc-num">01</span></div><h3>Frontend</h3><p>Fast, accessible interfaces that feel great on every screen and score well on Core Web Vitals.</p><ul class="chips"><li class="chip">React</li><li class="chip">Next.js</li><li class="chip">Vue</li></ul></li>
+      <li class="svc glass reveal" data-cat="build"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-server"/></svg></span><span class="svc-num">02</span></div><h3>Backend</h3><p>Reliable services and business logic built to grow with your traffic and your team.</p><ul class="chips"><li class="chip">Node.js</li><li class="chip">Python</li><li class="chip">Go</li></ul></li>
+      <li class="svc glass reveal" data-cat="build"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-db"/></svg></span><span class="svc-num">03</span></div><h3>Databases</h3><p>Schema design, safe migrations, indexing and query tuning for SQL and NoSQL stores.</p><ul class="chips"><li class="chip">PostgreSQL</li><li class="chip">MongoDB</li><li class="chip">Redis</li></ul></li>
+      <li class="svc glass reveal" data-cat="build"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg></span><span class="svc-num">04</span></div><h3>Full-stack projects</h3><p>From idea to launched product. One team owns the whole thing, end to end.</p><ul class="chips"><li class="chip">MVPs</li><li class="chip">SaaS</li><li class="chip">Platforms</li></ul></li>
+      <li class="svc glass reveal" data-cat="build"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg></span><span class="svc-num">05</span></div><h3>Mobile apps</h3><p>Native-feeling iOS and Android apps, cross-platform or fully native, through to store release.</p><ul class="chips"><li class="chip">React Native</li><li class="chip">Flutter</li><li class="chip">Swift</li></ul></li>
+      <li class="svc glass reveal" data-cat="build"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-monitor"/></svg></span><span class="svc-num">06</span></div><h3>Desktop apps</h3><p>Cross-platform desktop software for Windows, macOS and Linux with auto-updates built in.</p><ul class="chips"><li class="chip">Electron</li><li class="chip">Tauri</li><li class="chip">.NET</li></ul></li>
+      <li class="svc glass reveal" data-cat="ai"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg></span><span class="svc-num">07</span></div><h3>AI-powered apps</h3><p>LLM features, retrieval search, agents and copilots that plug into your product and data.</p><ul class="chips"><li class="chip">LLMs</li><li class="chip">RAG</li><li class="chip">Agents</li></ul></li>
+      <li class="svc glass reveal" data-cat="ai"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-cpu"/></svg></span><span class="svc-num">08</span></div><h3>Machine learning engineering (MLOps)</h3><p>Repeatable pipelines to train, deploy, monitor and retrain models in production.</p><ul class="chips"><li class="chip">MLflow</li><li class="chip">Kubeflow</li><li class="chip">SageMaker</li></ul></li>
+      <li class="svc glass reveal" data-cat="cloud"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-infinity"/></svg></span><span class="svc-num">09</span></div><h3>DevOps &amp; deployment</h3><p>CI/CD, containers and infrastructure as code, so releases are boring in the best way.</p><ul class="chips"><li class="chip">Docker</li><li class="chip">Kubernetes</li><li class="chip">Terraform</li></ul></li>
+      <li class="svc glass reveal" data-cat="cloud"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-cloud"/></svg></span><span class="svc-num">10</span></div><h3>Cloud services</h3><p>Architecture, migration and cost control across the major cloud providers.</p><ul class="chips"><li class="chip">AWS</li><li class="chip">GCP</li><li class="chip">Azure</li></ul></li>
+      <li class="svc glass reveal" data-cat="quality"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-flask"/></svg></span><span class="svc-num">11</span></div><h3>Code quality &amp; testing</h3><p>Unit, integration and end-to-end tests, plus code reviews that catch bugs before users do.</p><ul class="chips"><li class="chip">Jest</li><li class="chip">Playwright</li><li class="chip">Pytest</li></ul></li>
+      <li class="svc glass reveal" data-cat="quality"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span><span class="svc-num">12</span></div><h3>Security &amp; authentication</h3><p>Sign-in flows, access control, security reviews and hardening against common attacks.</p><ul class="chips"><li class="chip">OAuth</li><li class="chip">SSO</li><li class="chip">OWASP</li></ul></li>
+      <li class="svc glass reveal" data-cat="build"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-plug"/></svg></span><span class="svc-num">13</span></div><h3>APIs &amp; integrations</h3><p>Clean REST and GraphQL APIs, webhooks and connections to the tools you already pay for.</p><ul class="chips"><li class="chip">REST</li><li class="chip">GraphQL</li><li class="chip">Webhooks</li></ul></li>
+      <li class="svc glass reveal" data-cat="build"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-activity"/></svg></span><span class="svc-num">14</span></div><h3>Real-time &amp; networking apps</h3><p>Live chat, collaboration, streaming and multiplayer back ends with low latency.</p><ul class="chips"><li class="chip">WebSockets</li><li class="chip">WebRTC</li><li class="chip">gRPC</li></ul></li>
+      <li class="svc glass reveal" data-cat="special"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-wrench"/></svg></span><span class="svc-num">15</span></div><h3>Tooling &amp; automation</h3><p>CLIs, scripts and internal tools that take repetitive work off your team's plate.</p><ul class="chips"><li class="chip">CLIs</li><li class="chip">Internal tools</li><li class="chip">Workflows</li></ul></li>
+      <li class="svc glass reveal" data-cat="ai"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-funnel"/></svg></span><span class="svc-num">16</span></div><h3>Web scraping &amp; data pipelines</h3><p>Collect, clean and move data on a schedule, with monitoring when sources change.</p><ul class="chips"><li class="chip">Playwright</li><li class="chip">Airflow</li><li class="chip">ETL</li></ul></li>
+      <li class="svc glass reveal" data-cat="build"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-puzzle"/></svg></span><span class="svc-num">17</span></div><h3>Browser extensions</h3><p>Extensions for Chrome, Firefox and Edge, built to pass store review the first time.</p><ul class="chips"><li class="chip">Manifest V3</li><li class="chip">Chrome</li><li class="chip">Firefox</li></ul></li>
+      <li class="svc glass reveal" data-cat="special"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-bot"/></svg></span><span class="svc-num">18</span></div><h3>Bots</h3><p>Community, support and workflow bots that live where your users already talk.</p><ul class="chips"><li class="chip">Discord</li><li class="chip">Telegram</li><li class="chip">WhatsApp</li><li class="chip">Slack</li></ul></li>
+      <li class="svc glass reveal" data-cat="special"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-game"/></svg></span><span class="svc-num">19</span></div><h3>Game development</h3><p>Gameplay, tools and multiplayer for 2D, 3D and browser games.</p><ul class="chips"><li class="chip">Unity</li><li class="chip">Godot</li><li class="chip">Web games</li></ul></li>
+      <li class="svc glass reveal" data-cat="special"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-cube"/></svg></span><span class="svc-num">20</span></div><h3>Blockchain &amp; Web3</h3><p>Smart contracts and dApps built on proven patterns, with thorough test coverage.</p><ul class="chips"><li class="chip">Solidity</li><li class="chip">Smart contracts</li><li class="chip">dApps</li></ul></li>
+      <li class="svc glass reveal" data-cat="special"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-radio"/></svg></span><span class="svc-num">21</span></div><h3>Embedded systems &amp; IoT</h3><p>Firmware, sensors and connected devices, from prototype board to fleet dashboard.</p><ul class="chips"><li class="chip">Arduino</li><li class="chip">Raspberry Pi</li><li class="chip">MQTT</li></ul></li>
+      <li class="svc glass reveal" data-cat="cloud"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-network"/></svg></span><span class="svc-num">22</span></div><h3>System design &amp; architecture</h3><p>Blueprints and architecture reviews that hold up as users, data and teams grow.</p><ul class="chips"><li class="chip">Scalability</li><li class="chip">Reviews</li><li class="chip">Roadmaps</li></ul></li>
+      <li class="svc glass reveal" data-cat="cloud"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg></span><span class="svc-num">23</span></div><h3>Microservices</h3><p>Clear service boundaries, messaging and observability, or a careful split of your monolith.</p><ul class="chips"><li class="chip">Kafka</li><li class="chip">RabbitMQ</li><li class="chip">Tracing</li></ul></li>
+      <li class="svc glass reveal" data-cat="quality"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-gauge"/></svg></span><span class="svc-num">24</span></div><h3>Performance optimization</h3><p>Faster pages, queries and services, measured before and after so you see the gain.</p><ul class="chips"><li class="chip">Profiling</li><li class="chip">Caching</li><li class="chip">Web Vitals</li></ul></li>
+      <li class="svc glass reveal" data-cat="design"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-pen"/></svg></span><span class="svc-num">25</span></div><h3>UI/UX design &amp; prototyping</h3><p>Research, wireframes, clickable prototypes and design systems your developers will love.</p><ul class="chips"><li class="chip">Figma</li><li class="chip">Prototypes</li><li class="chip">Design systems</li></ul></li>
+      <li class="svc glass reveal" data-cat="design"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-branch"/></svg></span><span class="svc-num">26</span></div><h3>Open-source contributions</h3><p>Publish, maintain and contribute to open-source projects your business depends on.</p><ul class="chips"><li class="chip">GitHub</li><li class="chip">Packages</li><li class="chip">Maintenance</li></ul></li>
+      <li class="svc glass reveal" data-cat="design"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-doc"/></svg></span><span class="svc-num">27</span></div><h3>Documentation &amp; technical writing</h3><p>Docs sites, API references and guides that cut support tickets and speed up onboarding.</p><ul class="chips"><li class="chip">Docs sites</li><li class="chip">API refs</li><li class="chip">Guides</li></ul></li>
+      <li class="svc glass reveal" data-cat="design"><div class="svc-top"><span class="svc-ico"><svg class="icon" aria-hidden="true"><use href="#i-briefcase"/></svg></span><span class="svc-num">28</span></div><h3>Portfolio &amp; career</h3><p>Portfolio sites, polished GitHub profiles and interview prep for developers on the move.</p><ul class="chips"><li class="chip">Portfolios</li><li class="chip">Resumes</li><li class="chip">Mock interviews</li></ul></li>
+    </ul>
+    <div class="services-cta">
+      <a href="#contact" class="btn btn-ghost">Not sure which you need? Ask us <svg class="icon icon-sm icon-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS (bento) ============ -->
+<section class="section" id="process" aria-labelledby="process-title" style="padding-top:0">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">How we work</span>
+      <h2 id="process-title">A clear path from first call to steady growth</h2>
+      <p>Short cycles, visible progress and no surprises on scope or cost.</p>
+    </div>
+    <div class="bento">
+      <article class="tile glass reveal b-tall tile-feature" style="--i:0">
+        <span class="step">STEP 01</span>
+        <h3>Discover</h3>
+        <p>A free call to understand goals, users and constraints. You leave with a written plan, not a sales pitch.</p>
+        <ul>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Scope and success metrics</li>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Recommended services</li>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Timeline and estimate</li>
+        </ul>
+        <div class="mini-chart" aria-hidden="true"><i style="height:30%"></i><i style="height:45%"></i><i style="height:40%"></i><i style="height:62%"></i><i style="height:78%"></i><i style="height:100%"></i></div>
+      </article>
+      <article class="tile glass reveal b-wide" style="--i:1">
+        <span class="step">STEP 02</span>
+        <h3>Design &amp; architect</h3>
+        <p>Prototypes you can click and an architecture you can trust, agreed before a line of production code is written.</p>
+      </article>
+      <article class="tile glass reveal" style="--i:2">
+        <span class="step">STEP 03</span>
+        <h3>Build</h3>
+        <p>Weekly demos, a shared board and tested code merged every day.</p>
+      </article>
+      <article class="tile glass reveal" style="--i:3">
+        <span class="step">STEP 04</span>
+        <h3>Ship</h3>
+        <p>Automated deploys, monitoring and a launch checklist we have refined over many releases.</p>
+      </article>
+      <article class="tile glass reveal b-wide" style="--i:4">
+        <span class="step">STEP 05</span>
+        <h3>Support &amp; scale</h3>
+        <p>Performance tuning, security updates and new features on a schedule that fits your roadmap.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENGAGEMENTS ============ -->
+<section class="section" id="engage" aria-labelledby="engage-title" style="padding-top:0">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">Engagement models</span>
+      <h2 id="engage-title">Work with us the way that suits you</h2>
+      <p>Every project is quoted after a discovery call, so you only pay for what you need.</p>
+    </div>
+    <div class="plans">
+      <article class="plan glass reveal" style="--i:0">
+        <h3>Sprint</h3>
+        <p class="meta">2–6 weeks <small>fixed scope</small></p>
+        <p style="color:var(--color-muted-fg)">A focused build: an MVP, an extension, a bot, an audit or a performance pass.</p>
+        <ul>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Fixed price and timeline</li>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Weekly demo and report</li>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Handover docs included</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Plan a sprint</a>
+      </article>
+      <article class="plan glass reveal featured" style="--i:1">
+        <span class="badge">Most chosen</span>
+        <h3>Dedicated team</h3>
+        <p class="meta">Monthly <small>flexible scope</small></p>
+        <p style="color:var(--color-muted-fg)">A cross-functional squad that works as an extension of your company.</p>
+        <ul>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Mix any of the 28 services</li>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Shared Slack and roadmap</li>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Scale the team up or down</li>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>One lead, one point of contact</li>
+        </ul>
+        <a href="#contact" class="btn btn-accent">Build my team <svg class="icon icon-sm icon-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </article>
+      <article class="plan glass reveal" style="--i:2">
+        <h3>Care retainer</h3>
+        <p class="meta">Ongoing <small>after launch</small></p>
+        <p style="color:var(--color-muted-fg)">Keep what you have shipped fast, secure and up to date.</p>
+        <ul>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Monitoring and on-call</li>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Security and dependency updates</li>
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check"/></svg>Monthly improvement hours</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Talk about support</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section" id="faq" aria-labelledby="faq-title" style="padding-top:0">
+  <div class="container">
+    <div class="sec-head">
+      <span class="kicker">FAQ</span>
+      <h2 id="faq-title">Questions, answered</h2>
+    </div>
+    <div class="faq">
+      <details class="glass"><summary>Can you take over an existing codebase?<svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary><p class="answer">Yes. We start with a short code and architecture review, share what we find, then propose a plan to stabilize and extend it.</p></details>
+      <details class="glass"><summary>Do I need to know which services I need?<svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary><p class="answer">No. Tell us the problem or goal. During discovery we recommend the smallest set of services that gets you there.</p></details>
+      <details class="glass"><summary>Who owns the code and designs?<svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary><p class="answer">You do. All code, designs and documentation are yours, in your repositories and accounts, from day one.</p></details>
+      <details class="glass"><summary>How do you price projects?<svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary><p class="answer">Sprints are fixed-price. Dedicated teams and retainers are billed monthly. You get a written estimate after the discovery call, before any commitment.</p></details>
+      <details class="glass"><summary>How do we communicate during the project?<svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary><p class="answer">A shared channel for day-to-day questions, a live board for progress and a weekly demo where you see working software.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section" id="contact" aria-labelledby="contact-title" style="padding-top:0">
+  <div class="container">
+    <div class="cta-box glass">
+      <div class="cta-copy">
+        <span class="kicker">Start a project</span>
+        <h2 id="contact-title">Tell us what you are building</h2>
+        <p>Share a few details and we will reply within one business day with next steps and a time for a free discovery call.</p>
+        <ul class="cta-list">
+          <li><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>Reply within one business day</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>NDA available on request</li>
+          <li><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg>No commitment until you approve the plan</li>
+        </ul>
+      </div>
+      <!-- Front-end only: connect the submit handler to your backend or form service. -->
+      <form id="contact-form" novalidate>
+        <div class="row">
+          <div class="field">
+            <label for="f-name">Name <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+            <span class="err" id="e-name"></span>
+          </div>
+          <div class="field">
+            <label for="f-email">Work email <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="e-email">
+            <span class="err" id="e-email"></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-service">Main service needed</label>
+          <select id="f-service" name="service"><option value="">Not sure yet</option></select>
+        </div>
+        <div class="field">
+          <label for="f-msg">Project details <span class="req" aria-hidden="true">*</span></label>
+          <textarea id="f-msg" name="message" required aria-describedby="h-msg e-msg"></textarea>
+          <span class="helper" id="h-msg">Goals, timeline and anything already built.</span>
+          <span class="err" id="e-msg"></span>
+        </div>
+        <button class="btn btn-accent" type="submit" id="submit-btn"><span class="spinner" aria-hidden="true"></span>Send request <svg class="icon icon-sm icon-arrow" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <div class="form-status" id="form-status" role="status" aria-live="polite"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check-circle"/></svg><span></span></div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="foot">
+      <div>
+        <a href="#top" class="brand"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg></span>Stackforge</a>
+        <p>A senior product studio for web, mobile, AI, cloud and everything in between.</p>
+      </div>
+      <div>
+        <h4>Build</h4>
+        <ul><li><a href="#services">Web &amp; full-stack</a></li><li><a href="#services">Mobile &amp; desktop</a></li><li><a href="#services">AI &amp; data</a></li><li><a href="#services">Bots &amp; extensions</a></li></ul>
+      </div>
+      <div>
+        <h4>Operate</h4>
+        <ul><li><a href="#services">Cloud &amp; DevOps</a></li><li><a href="#services">Security</a></li><li><a href="#services">Performance</a></li><li><a href="#services">Testing</a></li></ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul><li><a href="#process">Process</a></li><li><a href="#engage">Engagements</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contact">Contact</a></li></ul>
+      </div>
+    </div>
+    <div class="legal"><span>© <span id="year">2026</span> Stackforge. All rights reserved.</span><span>Built with care, end to end.</span></div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+(function(){
+  const root=document.documentElement;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Theme toggle (light default, respects system, remembers choice) */
+  const toggle=document.querySelector('.theme-toggle');
+  let saved=null; try{saved=localStorage.getItem('theme')}catch(e){}
+  const sysDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const setTheme=t=>{root.setAttribute('data-theme',t);toggle.setAttribute('aria-label',t==='dark'?'Switch to light theme':'Switch to dark theme')};
+  setTheme(saved||(sysDark?'dark':'light'));
+  toggle.addEventListener('click',()=>{const t=root.getAttribute('data-theme')==='dark'?'light':'dark';setTheme(t);try{localStorage.setItem('theme',t)}catch(e){}});
+
+  /* Mobile menu */
+  const menuBtn=document.querySelector('.menu-btn'), menu=document.getElementById('mobile-menu');
+  const setMenu=open=>{menu.classList.toggle('open',open);menuBtn.setAttribute('aria-expanded',open);menuBtn.setAttribute('aria-label',open?'Close menu':'Open menu');menuBtn.querySelector('use').setAttribute('href',open?'#i-x':'#i-menu')};
+  menuBtn.addEventListener('click',()=>setMenu(!menu.classList.contains('open')));
+  menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu.classList.contains('open')){setMenu(false);menuBtn.focus()}});
+
+  /* Scroll reveal with stagger */
+  const items=document.querySelectorAll('.reveal');
+  if(reduce||!('IntersectionObserver' in window)){items.forEach(el=>el.classList.add('in'))}
+  else{
+    document.querySelectorAll('.svc').forEach((el,i)=>el.style.setProperty('--i',i%4));
+    const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}}),{rootMargin:'0px 0px -8% 0px',threshold:.08});
+    items.forEach(el=>io.observe(el));
+  }
+
+  /* Active nav link */
+  const links=[...document.querySelectorAll('.nav-links a')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+  if('IntersectionObserver' in window){
+    const nio=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){links.forEach(l=>l.removeAttribute('aria-current'));const l=links[secs.indexOf(en.target)];if(l)l.setAttribute('aria-current','true')}}),{rootMargin:'-45% 0px -50% 0px'});
+    secs.forEach(s=>s&&nio.observe(s));
+  }
+
+  /* Service filters */
+  const filters=document.querySelectorAll('.filter'), cards=document.querySelectorAll('.svc'), note=document.getElementById('results-note');
+  filters.forEach(btn=>btn.addEventListener('click',()=>{
+    const f=btn.dataset.filter;
+    filters.forEach(b=>b.setAttribute('aria-pressed',b===btn));
+    let n=0;
+    cards.forEach(c=>{const show=f==='all'||c.dataset.cat===f;c.hidden=!show;if(show){n++;c.classList.add('in')}});
+    note.textContent=f==='all'?'Showing all 28 services':`Showing ${n} ${btn.childNodes[0].textContent.trim()} services`;
+  }));
+
+  /* Populate service select */
+  const sel=document.getElementById('f-service');
+  cards.forEach(c=>{const o=document.createElement('option');o.textContent=c.querySelector('h3').textContent;sel.appendChild(o)});
+
+  /* Contact form: validate on blur and submit */
+  const form=document.getElementById('contact-form'), status=document.getElementById('form-status'), btn=document.getElementById('submit-btn');
+  const rules={
+    'f-name':v=>v.trim()?'':'Please enter your name.',
+    'f-email':v=>!v.trim()?'Please enter your email.':/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)?'':'Enter an email like name@company.com.',
+    'f-msg':v=>v.trim().length>=10?'':'Add a sentence or two about your project (at least 10 characters).'
+  };
+  const check=id=>{const el=document.getElementById(id),msg=rules[id](el.value),err=document.getElementById('e-'+id.slice(2));err.textContent=msg;el.setAttribute('aria-invalid',!!msg);return !msg};
+  Object.keys(rules).forEach(id=>{const el=document.getElementById(id);el.addEventListener('blur',()=>{if(el.value)check(id)});el.addEventListener('input',()=>{if(el.getAttribute('aria-invalid')==='true')check(id)})});
+  form.addEventListener('submit',e=>{
+    e.preventDefault();status.classList.remove('show');
+    const bad=Object.keys(rules).filter(id=>!check(id));
+    if(bad.length){document.getElementById(bad[0]).focus();return}
+    btn.setAttribute('aria-busy','true');btn.disabled=true;
+    // Replace this timeout with a fetch() to your backend or form service.
+    setTimeout(()=>{btn.removeAttribute('aria-busy');btn.disabled=false;form.reset();status.querySelector('span').textContent='Thanks! Your request is in. We will reply within one business day.';status.classList.add('show')},900);
+  });
+
+  document.getElementById('year').textContent=new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
