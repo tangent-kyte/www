@@ -135,13 +135,70 @@ footer .word .studio{color:var(--on-navy-soft)}
 .plan p{}
 .plan .tag{font-size:var(--step-small);color:var(--ink);font-weight:500}
 
-/* ---------- Contact ---------- */
+.plan .btn{margin-top:auto;align-self:flex-start}
+.plan .when+p{flex-grow:1}
+.btn-light{background:#fff}
+.btn-light:hover{background:var(--bg)}
+
+/* ---------- Our work ---------- */
+.work{padding:120px 0 0}
+.product{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:56px;align-items:center;background:var(--surface);padding:56px}
+.product .kind{font-size:var(--step-small);color:var(--muted);margin-bottom:12px}
+.product h3{font-size:var(--step-head);line-height:.95;letter-spacing:-0.05em}
+.product .pitch{font-size:var(--step-lead);line-height:1.35;margin-top:24px;max-width:28ch}
+.product .does{display:grid;gap:10px;margin-top:32px}
+.product .does li{display:flex;align-items:center;gap:12px}
+.product .does li::before{content:"";width:8px;height:8px;background:var(--ink);flex-shrink:0}
+.product .by{margin-top:32px;font-size:var(--step-small);color:var(--muted)}
+.more{margin-top:24px;color:var(--muted);font-size:var(--step-small)}
+
+/* Interface fragment: the Dejournal app */
+[data-ui].dj{background:#fff;color:#13294a;display:grid;grid-template-columns:150px minmax(0,1fr);font-size:13.5px;line-height:1.5}
+[data-ui].dj .side{background:#f3f7fc;padding:18px 0}
+[data-ui].dj .brand{padding:0 18px 16px;font-weight:500;font-size:15px}
+[data-ui].dj .side a{display:flex;justify-content:space-between;padding:7px 18px;text-decoration:none;color:#4d6380}
+[data-ui].dj .side a.on{background:#cfe6ff;color:#13294a;font-weight:500}
+[data-ui].dj .side small{color:#4d6380}
+[data-ui].dj .main{padding:20px 24px;display:grid;gap:18px}
+[data-ui].dj .day{display:flex;justify-content:space-between;align-items:baseline}
+[data-ui].dj .day b{font-size:18px;font-weight:500}
+[data-ui].dj .day span{color:#4d6380;font-size:12.5px}
+.dj h4{margin:0 0 6px;font-size:11.5px;font-weight:500;color:#4d6380}
+[data-ui].dj .item{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #e8eef6}
+[data-ui].dj .box{width:15px;height:15px;border:1.5px solid #9fb2c8;border-radius:4px;flex-shrink:0}
+[data-ui].dj .box.done{background:#13294a;border-color:#13294a;position:relative}
+[data-ui].dj .box.done::after{content:"";position:absolute;left:3.5px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+[data-ui].dj .struck{color:#5f7491;text-decoration:line-through}
+[data-ui].dj .tag{margin-left:auto;font-size:11.5px;padding:1px 8px;border-radius:99px;background:#ffe1ca;color:#13294a}
+[data-ui].dj .money{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #e8eef6}
+[data-ui].dj .total{display:flex;justify-content:space-between;padding-top:6px;font-weight:500}
+[data-ui].dj .note{background:#c9eedf;padding:12px 14px;border-radius:8px}
+
+/* ---------- Hire us ---------- */
 .contact{background:var(--navy);color:var(--on-navy);padding:120px 0}
-.contact .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px;align-items:end}
+.contact .wrap{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:64px;align-items:start}
 .contact h2{font-size:var(--step-head);line-height:.95}
-.contact p{color:var(--on-navy-soft);margin-top:20px;max-width:40ch}
-.contact .side{display:grid;gap:16px;justify-items:start}
+.contact .intro{color:var(--on-navy-soft);margin-top:20px;max-width:34ch}
+.contact .direct{margin-top:40px;display:grid;gap:6px}
+.contact .direct span{color:var(--on-navy-soft);font-size:var(--step-small)}
 .contact .mail{color:var(--on-navy);font-size:var(--step-lead);text-underline-offset:6px;overflow-wrap:anywhere}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 16px}
+.field{display:grid;gap:8px;align-content:start}
+.field.full{grid-column:1/-1}
+.field label{font-size:var(--step-small);font-weight:500;color:var(--on-navy)}
+.field label .req{color:var(--accent)}
+.field label .opt{color:var(--on-navy-soft);font-weight:400}
+.field input,.field select,.field textarea{width:100%;min-height:52px;padding:12px 14px;border:0;border-radius:0;background:#fff;color:var(--ink);font:inherit;font-size:16px}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2313294a' stroke-width='1.8'/%3E%3C/svg%3E");background-position:calc(100% - 16px) 50%;background-size:12px 8px;background-repeat:no-repeat;padding-right:40px}
+.field textarea{min-height:140px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:3px solid var(--accent);outline-offset:0}
+.field [aria-invalid="true"]{outline:3px solid #ffb4a8;outline-offset:0}
+.field .err{color:#ffc9bd;font-size:var(--step-small)}
+.field .err:empty{display:none}
+.form .send{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;margin-top:8px}
+.form .send p{color:var(--on-navy-soft);font-size:var(--step-small);max-width:42ch}
+.form .status{grid-column:1/-1;background:var(--mint);color:var(--ink);padding:14px 16px;font-size:var(--step-small)}
+.form .status[hidden]{display:none}
 
 footer{background:var(--navy);color:var(--on-navy-soft);font-size:var(--step-small)}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px 32px;flex-wrap:wrap;padding-top:8px;padding-bottom:48px}
@@ -162,6 +219,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
   .groups{grid-template-columns:repeat(2,minmax(0,1fr))}
   .plan-list{grid-template-columns:1fr}
   .sec-head{flex-direction:column;align-items:flex-start}
+  .product{grid-template-columns:1fr;padding:40px;gap:40px}
 }
 @media (max-width:767px){
   .top nav a:not(.btn){display:none}
@@ -174,6 +232,13 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
   [data-ui] pre>span::before{width:34px;padding-right:12px}
   .sec-head{margin-bottom:40px}
   .how h2{margin-bottom:32px}
+  .work{padding-top:88px}
+  .product{padding:28px 20px}
+  [data-ui].dj{grid-template-columns:1fr}
+  [data-ui].dj .side{display:none}
+  [data-ui].dj .main{padding:18px}
+  .form{grid-template-columns:1fr}
+  .contact .wrap{gap:48px}
 }
 </style>
 </head>
@@ -188,9 +253,10 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
     <a class="word" href="#top" aria-label="Tangent Kyte Studio, home"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><g transform="rotate(15 20 19)"><polygon points="20,4 20,34 7,14" fill="currentColor"/><polygon points="20,4 33,14 20,34" fill="#7fb6f2"/></g><line x1="16.1" y1="33.5" x2="3" y2="38.6" stroke="#e98f5c" stroke-width="1.8" stroke-linecap="round"/></svg><span>Tangent Kyte <span class="studio">Studio</span></span></a>
     <nav aria-label="Main">
       <a href="#services">Services</a>
+      <a href="#work">Our work</a>
       <a href="#how">How we work</a>
       <a href="#plans">Pricing</a>
-      <a class="btn" href="#contact">Start a project</a>
+      <a class="btn" href="#contact">Hire us</a>
     </nav>
   </div>
 </header>
@@ -266,6 +332,61 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
   </div>
 </section>
 
+<!-- Our work -->
+<section class="work" id="work" aria-labelledby="work-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="work-h" data-r>Our work</h2>
+      <p data-r>Products we have designed, built and shipped ourselves.</p>
+    </div>
+    <article class="product" aria-labelledby="dj-h" data-r>
+      <div>
+        <h3 id="dj-h">Dejournal</h3>
+        <p class="pitch">A productivity app that replaces five. Tasks, reminders, expenses and notes, together in one daily view.</p>
+        <ul class="does">
+          <li>Tasks and to-do lists</li>
+          <li>Reminders that arrive on time</li>
+          <li>Expense tracking with daily totals</li>
+          <li>Notes and a personal journal</li>
+        </ul>
+        <p class="by">Designed and built by Tangent Kyte Studio.</p>
+      </div>
+      <div class="dj" data-ui role="img" aria-label="The Dejournal app showing one day: three tasks, a reminder, two expenses totalling 42.70 dollars, and a note">
+        <div class="side">
+          <div class="brand">Dejournal</div>
+          <a class="on">Today <small>7</small></a>
+          <a>Tasks <small>12</small></a>
+          <a>Reminders <small>3</small></a>
+          <a>Expenses</a>
+          <a>Notes</a>
+          <a>Journal</a>
+        </div>
+        <div class="main">
+          <div class="day"><b>Today</b><span>Tuesday, 21 October</span></div>
+          <div>
+            <h4>Tasks</h4>
+            <div class="item"><i class="box done"></i><span class="struck">Send the project proposal</span></div>
+            <div class="item"><i class="box"></i><span>Book dentist appointment</span></div>
+            <div class="item"><i class="box"></i><span>Pick up groceries</span></div>
+          </div>
+          <div>
+            <h4>Reminders</h4>
+            <div class="item"><i class="box"></i><span>Pay rent</span><span class="tag">6:00 pm</span></div>
+          </div>
+          <div>
+            <h4>Expenses</h4>
+            <div class="money"><span>Coffee</span><span>$4.50</span></div>
+            <div class="money"><span>Groceries</span><span>$38.20</span></div>
+            <div class="total"><span>Today</span><span>$42.70</span></div>
+          </div>
+          <div class="note">Weekend: try the new trail and plan next month's budget.</div>
+        </div>
+      </div>
+    </article>
+    <p class="more" data-r>More products and client work coming soon.</p>
+  </div>
+</section>
+
 <!-- How we work -->
 <section class="how" id="how" aria-labelledby="how-h">
   <div class="wrap grid">
@@ -302,17 +423,20 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
         <h3>Sprint</h3>
         <p class="when">Fixed price, 2 to 6 weeks</p>
         <p>One clear job, like an MVP, a bot, an audit or a speed fix.</p>
+        <a class="btn btn-light" href="#contact" data-plan="sprint">Book a sprint</a>
       </div>
       <div class="plan rec" data-r>
         <h3>Dedicated team</h3>
         <p class="when">Monthly</p>
         <p>A lead plus the specialists you need, for products that keep growing.</p>
         <p class="tag">Most popular</p>
+        <a class="btn" href="#contact" data-plan="team">Hire a team</a>
       </div>
       <div class="plan" data-r>
         <h3>Support</h3>
         <p class="when">Monthly, after launch</p>
         <p>Updates, fixes and small features for software already in use.</p>
+        <a class="btn btn-light" href="#contact" data-plan="support">Start support</a>
       </div>
     </div>
   </div>
@@ -322,13 +446,89 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
 <section class="contact" id="contact" aria-labelledby="contact-h">
   <div class="wrap">
     <div>
-      <h2 id="contact-h" data-r>Tell us what you're building.</h2>
-      <p data-r>Send a few lines about your project. We reply within one business day with next steps.</p>
+      <h2 id="contact-h" data-r>Hire us</h2>
+      <p class="intro" data-r>Tell us what you want built. We reply within one business day with questions, a plan and a quote.</p>
+      <div class="direct" data-r>
+        <span>Or email us directly</span>
+        <a class="mail" href="mailto:tangentkyte@yahoo.com">tangentkyte@yahoo.com</a>
+      </div>
     </div>
-    <div class="side" data-r>
-      <a class="btn" href="mailto:hello@tangentkyte.studio?subject=New%20project">Email us <svg aria-hidden="true"><use href="#arrow"/></svg></a>
-      <a class="mail" href="mailto:hello@tangentkyte.studio">hello@tangentkyte.studio</a>
-    </div>
+
+    <!-- Until a form service is connected, sending opens the visitor's email app with everything filled in. -->
+    <form class="form" id="hire-form" action="mailto:tangentkyte@yahoo.com" method="post" enctype="text/plain" novalidate data-r>
+      <div class="field">
+        <label for="f-name">Name <span class="req" aria-hidden="true">*</span></label>
+        <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
+        <span class="err" id="e-name"></span>
+      </div>
+      <div class="field">
+        <label for="f-email">Email <span class="req" aria-hidden="true">*</span></label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="e-email">
+        <span class="err" id="e-email"></span>
+      </div>
+      <div class="field">
+        <label for="f-company">Company <span class="opt">(optional)</span></label>
+        <input id="f-company" name="company" type="text" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="f-subject">Subject <span class="req" aria-hidden="true">*</span></label>
+        <input id="f-subject" name="subject" type="text" required aria-describedby="e-subject" placeholder="For example: a booking app for our clinic">
+        <span class="err" id="e-subject"></span>
+      </div>
+      <div class="field">
+        <label for="f-service">What do you need?</label>
+        <select id="f-service" name="service">
+          <option>Not sure yet</option>
+          <option>Website or web app</option>
+          <option>Mobile app</option>
+          <option>Desktop app</option>
+          <option>AI features or automation</option>
+          <option>Cloud, DevOps or security</option>
+          <option>Bot, game, Web3 or IoT</option>
+          <option>UI/UX design</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-plan">Way of working</label>
+        <select id="f-plan" name="plan">
+          <option value="">Not sure yet</option>
+          <option value="sprint">Sprint (fixed price)</option>
+          <option value="team">Dedicated team (monthly)</option>
+          <option value="support">Support (monthly)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-budget">Budget</label>
+        <select id="f-budget" name="budget">
+          <option>Not sure yet</option>
+          <option>Under $5,000</option>
+          <option>$5,000 to $15,000</option>
+          <option>$15,000 to $50,000</option>
+          <option>Over $50,000</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-timeline">Timeline</label>
+        <select id="f-timeline" name="timeline">
+          <option>Flexible</option>
+          <option>As soon as possible</option>
+          <option>Within 1 month</option>
+          <option>1 to 3 months</option>
+          <option>3 months or more</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label for="f-details">Project details <span class="req" aria-hidden="true">*</span></label>
+        <textarea id="f-details" name="details" required aria-describedby="e-details" placeholder="What should it do, who is it for, and is anything already built?"></textarea>
+        <span class="err" id="e-details"></span>
+      </div>
+      <div class="send">
+        <button class="btn" type="submit">Send message <svg aria-hidden="true"><use href="#arrow"/></svg></button>
+        <p>Fields marked * are required. Sending opens your email app with your message ready to go.</p>
+      </div>
+      <p class="status" id="f-status" role="status" hidden></p>
+    </form>
   </div>
 </section>
 </main>
@@ -358,6 +558,60 @@ document.documentElement.classList.add('js');
     all.forEach(function(el){ io.observe(el); });
     setTimeout(function(){ all.forEach(function(el){ if (el.getBoundingClientRect().top < innerHeight) el.classList.add('in'); }); }, 60);
   }
+  /* Pricing buttons: paste each plan's payment link here once the payment gateway is set up.
+     While a link is empty, the button opens the Hire us form with that plan already selected. */
+  var PAYMENT_LINKS = { sprint: '', team: '', support: '' };
+  var planSelect = document.getElementById('f-plan');
+  document.querySelectorAll('[data-plan]').forEach(function(btn){
+    var plan = btn.getAttribute('data-plan');
+    if (PAYMENT_LINKS[plan]) { btn.href = PAYMENT_LINKS[plan]; return; }
+    btn.addEventListener('click', function(){
+      planSelect.value = plan;
+      setTimeout(function(){ document.getElementById('f-name').focus({ preventScroll: true }); }, 500);
+    });
+  });
+
+  /* Hire us form: check the required fields, then open an email with everything filled in. */
+  var EMAIL = 'tangentkyte@yahoo.com';
+  var form = document.getElementById('hire-form'), status = document.getElementById('f-status');
+  var rules = {
+    'f-name': function(v){ return v.trim() ? '' : 'Please add your name.'; },
+    'f-email': function(v){ return !v.trim() ? 'Please add your email.' : (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'That email looks incomplete, like name@company.com.'); },
+    'f-subject': function(v){ return v.trim() ? '' : 'Please add a subject.'; },
+    'f-details': function(v){ return v.trim().length >= 10 ? '' : 'Please add a sentence or two about the project.'; }
+  };
+  function check(id){
+    var el = document.getElementById(id), msg = rules[id](el.value);
+    document.getElementById('e-' + id.slice(2)).textContent = msg;
+    el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    return !msg;
+  }
+  Object.keys(rules).forEach(function(id){
+    var el = document.getElementById(id);
+    el.addEventListener('blur', function(){ if (el.value) check(id); });
+    el.addEventListener('input', function(){ if (el.getAttribute('aria-invalid') === 'true') check(id); });
+  });
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var bad = Object.keys(rules).filter(function(id){ return !check(id); });
+    if (bad.length) { document.getElementById(bad[0]).focus(); return; }
+    var v = function(id){ var el = document.getElementById(id); return el.tagName === 'SELECT' ? el.options[el.selectedIndex].text : el.value.trim(); };
+    var body = [
+      'Name: ' + v('f-name'),
+      'Email: ' + v('f-email'),
+      'Company: ' + (v('f-company') || 'Not given'),
+      'What I need: ' + v('f-service'),
+      'Way of working: ' + v('f-plan'),
+      'Budget: ' + v('f-budget'),
+      'Timeline: ' + v('f-timeline'),
+      '',
+      v('f-details')
+    ].join('\n');
+    window.location.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(v('f-subject')) + '&body=' + encodeURIComponent(body);
+    status.hidden = false;
+    status.textContent = 'Your email app should open with the message ready. If it does not, write to ' + EMAIL + '.';
+  });
+
   document.getElementById('year').textContent = new Date().getFullYear();
 })();
 </script>
